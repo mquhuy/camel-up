@@ -37,9 +37,9 @@ class Player:
 
     def roll_dice(self, game):
         print("Player {} rolling dice".format(self.name))
-        game.roll_pyramid_dice()
+        camel, steps = game.roll_pyramid_dice()
         game.rollers.append(self)
-        return True
+        return True, camel, steps
 
     def bet_leg(self, camel, game):
         print("Player {} bet that camel {} wins the leg".format(self.name, camel.name))
@@ -76,34 +76,41 @@ class Player:
             print("Player {} cannot put desert on space {}.".format(self.name, space.id))
             return False
         print("Player {} puts desert on space {} with state {}.".format(self.name, space.id, state))
+        if self.desert_space is not None:
+            self.desert_space.remove_desert()
         self.desert_space = space
         space.set_desert(self, state)
         return True
 
     def take_turn(self, game, kargs=[]):
         if not self.is_human:
-            choice = random.randrange(5)
+            choice = random.choice(["roll", "bet leg", "bet end win", "bet end lose", "set desert"])
             space_idx = random.randrange(16)
             state = random.choice([-1, 1])
             camel_idx = random.randrange(5)
-            actions = (choice, space_idx, state, camel_idx)
+            camel = game.camels[camel_idx]
+            space = game.spaces[space_idx]
+            actions = (choice, space, state, camel)
         else:
             actions = kargs
         return self.perform_turn_actions(game, actions)
 
     def perform_turn_actions(self, game, actions):
         turn_success = False
-        action_choice, space_idx, state, camel_idx = actions
-        camel = game.camels[camel_idx]
-        space = game.spaces[space_idx]
-        if action_choice == 0:
-            turn_success = self.roll_dice(game)
-        elif action_choice == 1:
+        action_choice, space, state, camel = actions
+        steps = None
+        if action_choice == "roll":
+            turn_success, camel, steps = self.roll_dice(game)
+        elif action_choice == "bet leg":
             turn_success = self.bet_leg(camel, game)
-        elif action_choice == 2:
+        elif action_choice == "bet end win":
             turn_success = self.bet_game_winning_camel(camel, game)
-        elif action_choice == 3:
+        elif action_choice == "bet end lose":
             turn_success = self.bet_game_losing_camel(camel, game)
-        elif action_choice == 4:
+        elif action_choice == "set desert":
             turn_success = self.set_desert(game, space, state)
-        return turn_success
+        return turn_success, {'action': action_choice,
+                              'spaceIdx': space.id + 1,
+                              'state': state,
+                              'camel': camel.name,
+                              'roll_num': steps}

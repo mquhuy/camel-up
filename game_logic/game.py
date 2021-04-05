@@ -23,6 +23,16 @@ class Game:
         self.final_bet_winning_camel = {camel: [] for camel in self.camels}
         self.final_bet_losing_camel = {camel: [] for camel in self.camels}
         self.initialize_players(n_init_players)
+        self.game_on = False
+
+    def start_game(self):
+        self.game_on = True
+        init_locs = self.roll_init_dice()
+        print("Initialized camel's starting position:")
+        camels = list(init_locs.keys())
+        random.shuffle(camels)
+        for camel in camels:
+            self.move(camel, init_locs[camel])
 
     def initialize_players(self, n_players):
         n_players_to_create = n_players - len(self.players)
@@ -90,7 +100,7 @@ class Game:
         self.betting_tiles = {camel: [] for camel in self.camels}
         self.rollers = []
         for player in self.players:
-            player.reset_bets() 
+            player.reset_bets()
 
     def roll_pyramid_dice(self):
         camel_index = random.randrange(len(self.pyramid_dices))
@@ -98,6 +108,7 @@ class Game:
         steps = random.randrange(3) + 1
         print("*** Roll dice: {} with step {}".format(camel.name, steps))
         self.move(camel, steps)
+        return camel, steps
 
     def check_end_leg(self):
         return (len(self.pyramid_dices) == 0 or self.winning_camel is not None)
