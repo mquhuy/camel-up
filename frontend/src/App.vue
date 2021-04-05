@@ -91,6 +91,9 @@ export default {
             case "action":
               this.actions = content;
               break;
+            case "result":
+              this.actions = content;
+              break;
           }
       });
       this.socket.on("player", (content) => {

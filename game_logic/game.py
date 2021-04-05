@@ -150,6 +150,7 @@ class Game:
     def determine_game_result(self):
         self.scores = {player.name: player.points for player in self.players}
         orders = sorted(self.scores, key=self.scores.get, reverse=True)
+        self.winning_player = orders[0]
         self.scores = {player: self.scores[player] for player in orders}
         print("Scoring table:")
         print(self.scores)

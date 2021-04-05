@@ -52,6 +52,11 @@ def create_app():
                                     for s in g.spaces},
                         }, namespace='/message')
 
+    def send_game_result():
+        io.emit('info', {'type': 'result',
+                         'winning_camel': g.winning_camel.name,
+                         'winning_player': g.winning_player}, namespace='/message')
+
     def send_action_info(actions, player):
         actions.update({"type": "action", "player": player.name})
         io.emit('info', actions, namespace='/message')
@@ -84,6 +89,7 @@ def create_app():
         g.determine_game_result()
         update_players_info()
         update_board_info()
+        send_game_result()
         g.game_on = False
 
     @io.on('next_player', namespace='/message')

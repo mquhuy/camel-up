@@ -1,10 +1,18 @@
 <template>
     <div v-if="action">
-      <div class="info">
+      <div v-if="action.type != 'result'" class="info">
       {{ action.player }} performs action {{ action.action }}
       </div>
       <div v-if="action.action == 'roll'" class="roll" :class="action.camel">
         <div class="die">{{ action.roll_num }} </div>
+      </div>
+      <div v-if="action.type == 'result'" class="result">
+        <div class="result-item">
+          Camel {{ action.winning_camel }} achieves the first place.
+        </div>
+        <div class="result-item">
+          Player {{ action.winning_player }} won.
+        </div>
       </div>
     </div>
 </template>
