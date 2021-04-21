@@ -43,6 +43,15 @@ class Player:
         print("Cannot bet since all the bets were taken")
         return False
 
+    def leg_bet_scoring(self, orders):
+        for camel, points in self.leg_bets.item():
+            if camel == orders[0].name and points > 0:
+                self.earn_points(points, "leg betting winner")
+            elif camel == orders[1].name and points > 0:
+                self.earn_points(1, "leg betting second place")
+            elif points > 0:
+                self.lose_points(1, "losing the leg bet")
+
     def bet_game_winning_camel(self, camel, game):
         print("Player {} bet that camel {} wins the game".format(self.name, camel.name))
         if (not (self.final_bets[camel.name])):

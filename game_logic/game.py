@@ -122,14 +122,8 @@ class Game:
 
     def leg_scoring_round(self):
         self.determine_leg_result()
-        leg_winner = self.orders[0]
-        for player in self.betting_tiles[leg_winner]:
-            player.earn_points(player.leg_bets[leg_winner.name], "leg betting winner")
-        for player in self.betting_tiles[self.orders[1]]:
-            player.earn_points(1, "leg betting second place")
-        for camel in self.orders[2:]:
-            for player in self.betting_tiles[camel]:
-                player.lose_points(1, "losing the leg bet")
+        for player in self.players:
+            player.leg_bet_scoring(self.orders)
         for player in self.rollers:
             player.earn_points(1, "rolling the dice")
 
