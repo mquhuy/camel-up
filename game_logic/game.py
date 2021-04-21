@@ -104,6 +104,10 @@ class Game:
         self.rollers = []
         for player in self.players:
             player.reset_bets()
+        for space in self.spaces:
+            space.remove_desert()
+        for player in self.players:
+            player.remove_desert()
 
     def roll_pyramid_dice(self):
         camel_index = random.randrange(len(self.pyramid_dices))

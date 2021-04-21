@@ -83,6 +83,9 @@ class Player:
         space.set_desert(self, state)
         return True
 
+    def remove_desert(self):
+        self.desert_space = None
+
     def take_turn(self, game, kargs=[]):
         if not self.is_human:
             choice = random.choice(["roll", "bet leg", "bet end win", "bet end lose", "set desert"])
