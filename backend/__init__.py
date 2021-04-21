@@ -42,7 +42,6 @@ def create_app():
                         'points': p.points,
                         'current': (p.p_id == g.current_player().p_id)}
                         for p in g.players],
-                         "currentP": g.current_player().p_id,
                          }, namespace='/message')
 
     def update_board_info():

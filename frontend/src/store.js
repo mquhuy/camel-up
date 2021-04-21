@@ -11,7 +11,6 @@ const state = {
   isConnected: false,
   spaces: init_spaces,
   registered: false,
-  currentP: "",
   players: [],
   pName: "",
   pID: "",

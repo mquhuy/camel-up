@@ -36,7 +36,6 @@ export default {
   name: "App",
   computed: mapState([
       "registered",
-      "currentP",
       "spaces",
       "players",
       "gameOn",
