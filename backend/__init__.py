@@ -76,10 +76,12 @@ def create_app():
 
     @io.on('start', namespace='/message')
     def start_game(_param):
+        io.emit("info", {"type": "game-start"}, namespace="/message")
+        time.sleep(20)
         g.start_game()
         update_players_info()
         bot_running()
-        io.emit('info', {'type': 'game_end'})
+        io.emit('info', {'type': 'game-end'})
 
     @io.on('reset', namespace='/message')
     def reset_game():

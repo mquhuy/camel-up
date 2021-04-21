@@ -1,16 +1,17 @@
 <template>
-  <div id="registration" v-if="!registered">
-    <div class="human-player">
-      <input type="checkbox" v-model="addHuman"> Include Human Player
-      <input v-if="addHuman" v-model="pName" placeholder="Enter your name">
-    </div>
-    <input v-model.number="nP" type="number" placeholder="Number of bot players">
-    <button @click="register(pName, nP)">Register</button>
-  </div>
   <div v-if="!this.gameOn" class="buttons">
-      <button @click="start">Start Game</button>
-      <button @click="next_player">End turn</button>
+    <div id="registration" v-if="!registered">
+      <div class="human-player">
+        <input type="checkbox" v-model="addHuman"> Include Human Player
+        <input v-if="addHuman" v-model="pName" placeholder="Enter your name">
+      </div>
+      <input v-model.number="nP" type="number" placeholder="Number of bot players">
+      <button @click="register(pName, nP)">Register</button>
+    </div>
+    <button @click="start">Start Game</button>
+    <button @click="next_player">End turn</button>
   </div>
+  <div v-if="this.gameOn">
   <div class="leg-betting-tiles">
     <LegBettingTile v-for="tile in this.bettingTiles" :key="tile" :tile="tile" />
   </div>
@@ -26,6 +27,7 @@
         <Player :player=player />
       </div>
     </div>
+  </div>
   </div>
 </template>
 

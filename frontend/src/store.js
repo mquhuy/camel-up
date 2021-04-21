@@ -1,15 +1,9 @@
 import { createStore } from "vuex";
 import socket from "./socket";
 
-var init_spaces = new Object();
-var i;
-for (i = 1; i <= 16; i++) {
-  init_spaces[i] = {'id': i, 'camels': [], 'desert': 0};
-}
-
 const state = {
   isConnected: false,
-  spaces: init_spaces,
+  spaces: [],
   registered: false,
   players: [],
   pName: "",
@@ -20,6 +14,10 @@ const state = {
 };
 
 const mutations = {
+  START_GAME(state) {
+    console.log("Starting the game")
+    state.gameOn = true;
+  },
   UPDATE_SPACES(state, payload) {
     state.spaces = payload;
   },
@@ -46,6 +44,9 @@ const actions = {
   SOCKET_info(context, payload) {
     const type = payload.type;
     switch (type) {
+      case "game-start":
+        context.commit("START_GAME");
+        break;
       case "board":
         context.commit("UPDATE_SPACES", payload.spaces);
         break;

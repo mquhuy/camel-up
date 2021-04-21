@@ -44,7 +44,7 @@ class Player:
         return False
 
     def leg_bet_scoring(self, orders):
-        for camel, points in self.leg_bets.item():
+        for camel, points in self.leg_bets.items():
             if camel == orders[0].name and points > 0:
                 self.earn_points(points, "leg betting winner")
             elif camel == orders[1].name and points > 0:
