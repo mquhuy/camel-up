@@ -1,11 +1,11 @@
 <template>
-  <div :class="[spaceClass, idClass]">
-    <div v-if="inf" class="camels">
-      <div v-for="camel in inf.camels " :key="camel" class="camel" :class="camel"></div>
+  <div :class="idClass" class="space">
+    <div v-if="space.camels.length" class="camels">
+      <div v-for="camel in space.camels " :key="camel" class="camel" :class="camel"></div>
     </div>
-    <div v-if="inf.desert != 0">
-      <div class="desert">{{ inf.desert }}</div>
-      <div class="desert-owner">{{ inf.desertP }}</div>
+    <div v-if="space.desert != 0">
+      <div class="desert">{{ space.desert }}</div>
+      <div class="desert-owner">{{ space.desertP }}</div>
     </div>
   </div>
 </template>
@@ -13,12 +13,10 @@
 <script>
 export default {
   name: "Space",
-  props: [ "info"],
+  props: [ "space"],
   data: function() {
     return {
-      spaceClass: 'space',
-      idClass: "id" + this.info["id"],
-      inf: this.info,
+      idClass: "id" + this.space.id,
     }
   },
 };

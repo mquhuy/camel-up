@@ -7,140 +7,62 @@
     <input v-model.number="nP" type="number" placeholder="Number of bot players">
     <button v-on:click="register(pName, nP)">Register</button>
   </div>
-  <div class="buttons">
+  <div v-if="!this.gameOn" class="buttons">
       <button v-on:click="start">Start Game</button>
       <button v-on:click="next_player">End turn</button>
   </div>
   <div class="container">
     <div v-if="this.spaces" class="game-board">
-      <Space v-for="i in 16" :key="this.spaces[i]" :info=this.spaces[i] />
+      <Space v-for="space in this.spaces" :key="space.id" :space="space" />
       <div class="pyramid">
         <Pyramid :action_info="this.actions" :key="this.actions" />
       </div>
     </div>
     <div class="grade-board">
       <div id="players" v-for="player in this.players" :key="player.id">
-      <Player :playerName=player.name :playerId=player.id :currentP=this.currentP :points=player.points />
+        <Player :player=player />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import io from "socket.io-client";
 import Player from "./components/Player.vue";
-import Space from "./components/Space.vue";
-import Pyramid from "./components/Pyramid.vue";
+import Space from "./components/board/Space.vue";
+import Pyramid from "./components/board/Pyramid.vue";
+import { mapState } from 'vuex';
 
 export default {
   name: "App",
-  data: function () {
-    var init_spaces = new Object;
-    var i;
-    for (i = 1; i <= 16; i++) {
-      init_spaces[i] = {'id': i, 'camels': [], 'desert': 0};
-    }
+  computed: mapState([
+      "registered",
+      "currentP",
+      "spaces",
+      "players",
+      "gameOn",
+      "actions",
+  ]),
+  data() {
     return {
-      registered: false,
-      currentP: "",
-      players: [],
-      pName: "",
-      addHuman: false,
-      pID: "",
-      spaces: init_spaces,
-      init_spaces: init_spaces,
-      actions: null,
+      "nP": 0,
+      "addHuman": false,
+      "pName": "",
+    }
+  },
+  methods: {
+    start: function() {
+      this.$store.dispatch("sendCommand", {command: "start"});
+    },
+    register: function(pName, nP) {
+      this.$store.dispatch("sendCommand", {command: "register",
+                                           name: pName,
+                                           nP: nP});
     }
   },
   components: {
     Player,
     Space,
     Pyramid,
-  },
-  created() {
-    this.connectWebsocket();
-  },
-  beforeUnmount() {
-    this.disconnectWebsocket();
-  },
-  methods: {
-    connectWebsocket() {
-      this.socket = io("/message", {path: "/backend/socket.io"});
-      this.socket.on("register", (message) => {
-          console.log(message);
-      });
-      this.socket.on("notification", (message) => {
-          console.log(message["content"]);
-      });
-      this.socket.on("info", (content) => {
-          console.log(content);
-          let type = content["type"]
-          switch (type) {
-            case "registration_result":
-              this.register_confirm(content);
-              break;
-            case "players":
-              this.update_player_info(content);
-              break;
-            case "board":
-              this.update_board_info(content);
-              break;
-            case "reset":
-              this.reset();
-              break;
-            case "action":
-              this.actions = content;
-              break;
-            case "result":
-              this.actions = content;
-              break;
-          }
-      });
-      this.socket.on("player", (content) => {
-          console.log(content);
-          this.currentP = content;
-      });
-    },
-    disconnectWebsocket() {
-      if (this.socket) {
-        this.socket.emit("disconnect");
-        this.socket.disconnect();
-      }
-    },
-    register: function(name, nPlayers) {
-      if (this.socket) {
-        this.socket.emit("register", name, nPlayers);
-      } else {
-        console.log(name, nPlayers);
-      }
-    },
-    register_confirm(content) {
-      if (content["registered"] == "True") {
-        this.registered = true
-        this.pName = content["player_name"]
-        this.pId = content["player_id"]
-      }
-    },
-    update_player_info(content) {
-        this.players = content["Players"]
-        this.currentP = content["currentP"]
-        console.log(this.players)
-    },
-    next_player: function() {
-      console.log("Next player")
-      this.socket.emit("next_player");
-    },
-    start: function() {
-      console.log("Game begins")
-      this.socket.emit("start");
-    },
-    reset: function() {
-      this.socket.emit("reset");
-      this.spaces = this.init_spaces;
-    },
-    update_board_info(content) {
-      this.spaces = content['spaces']
-    }
   },
 }
 </script>

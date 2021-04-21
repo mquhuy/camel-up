@@ -19,7 +19,10 @@ def create_app():
 
 
     @io.on('register', namespace='/message')
-    def register_player(name, n_players):
+    def register_player(data):
+        print(data)
+        name = data["name"]
+        n_players = data["nP"]
         print(n_players)
         g.initialize_players(int(n_players))
         print("Received name: " + name)
@@ -36,7 +39,9 @@ def create_app():
         print("Sending update player info")
         io.emit('info', {"type": "players",
             "Players": [{'id': p.p_id, 'name': p.name,
-                         'points': p.points} for p in g.players],
+                        'points': p.points,
+                        'current': (p.p_id == g.current_player().p_id)}
+                        for p in g.players],
                          "currentP": g.current_player().p_id,
                          }, namespace='/message')
 
@@ -62,11 +67,15 @@ def create_app():
         io.emit('info', actions, namespace='/message')
 
     @io.on('start', namespace='/message')
-    def start_game():
+    def start_game(_param):
         g.start_game()
         update_players_info()
         bot_running()
         io.emit('info', {'type': 'game_end'})
+
+    @io.on('reset', namespace='/message')
+    def reset_game():
+        del g
 
     def bot_running():
         while not g.current_player().is_human and g.winning_camel is None:
@@ -97,8 +106,8 @@ def create_app():
         g.next_player()
         current_player = g.current_player().name
         print(current_player)
-        io.emit('player', current_player, namespace='/message')
-
+        io.emit('info', {'type': 'current_player',
+                         'info': current_player}, namespace='/message')
 
     @io.on('connect', namespace='/message')
     def message_connect():

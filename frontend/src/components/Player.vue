@@ -1,21 +1,16 @@
 <template>
-    <div v-if="playerId == currentP">
-      <h1 :playerName="playerName" :points="points">{{ playerName }}: {{ points }}</h1>
+    <div v-if="player.current">
+      <h1>{{ player.name }}: {{ player.points }}</h1>
     </div>
-    <div v-if="playerId != currentP">
-      <h3 :playerName="playerName" :points="points">{{ playerName }}: {{ points }}</h3>
+    <div v-if="!player.current">
+      <h3>{{ player.name }}: {{ player.points }}</h3>
     </div>
 </template>
 
 <script>
 export default {
   name: "Player",
-  props: {
-    playerId: Number,
-    playerName: String,
-    currentP: Number,
-    points: Number,
-  },
+  props: ['player'],
 };
 </script>
 
