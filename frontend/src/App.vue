@@ -5,11 +5,14 @@
       <input v-if="addHuman" v-model="pName" placeholder="Enter your name">
     </div>
     <input v-model.number="nP" type="number" placeholder="Number of bot players">
-    <button v-on:click="register(pName, nP)">Register</button>
+    <button @click="register(pName, nP)">Register</button>
   </div>
   <div v-if="!this.gameOn" class="buttons">
-      <button v-on:click="start">Start Game</button>
-      <button v-on:click="next_player">End turn</button>
+      <button @click="start">Start Game</button>
+      <button @click="next_player">End turn</button>
+  </div>
+  <div class="leg-betting-tiles">
+    <LegBettingTile v-for="tile in this.bettingTiles" :key="tile" :tile="tile" />
   </div>
   <div class="container">
     <div v-if="this.spaces" class="game-board">
@@ -30,6 +33,7 @@
 import Player from "./components/Player.vue";
 import Space from "./components/board/Space.vue";
 import Pyramid from "./components/board/Pyramid.vue";
+import LegBettingTile from "./components/board/LegBettingTile";
 import { mapState } from 'vuex';
 
 export default {
@@ -40,6 +44,7 @@ export default {
       "players",
       "gameOn",
       "actions",
+      "bettingTiles",
   ]),
   data() {
     return {
@@ -62,6 +67,7 @@ export default {
     Player,
     Space,
     Pyramid,
+    LegBettingTile,
   },
 }
 </script>
@@ -97,5 +103,8 @@ export default {
   position: absolute;
   top: 120px;
   left: 120px;
+}
+.leg-betting-tiles {
+  display: flex;
 }
 </style>

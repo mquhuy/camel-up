@@ -5,11 +5,11 @@ import names
 try:
     from .space import Space, Camel
     from .player import Player
-    from .config import CAMELS, FINAL_BET_WINNER_PRIZES
+    from .config import CAMELS, FINAL_BET_WINNER_PRIZES, LEG_BET_PRIZES
 except (ImportError, ValueError):
     from space import Space, Camel
     from player import Player
-    from config import CAMELS, FINAL_BET_WINNER_PRIZES
+    from config import CAMELS, FINAL_BET_WINNER_PRIZES, LEG_BET_PRIZES
 
 
 class Game:
@@ -24,6 +24,8 @@ class Game:
         self.final_bet_losing_camel = {camel: [] for camel in self.camels}
         self.initialize_players(n_init_players)
         self.game_on = False
+        self.betting_tiles = {camel: [prize for prize in LEG_BET_PRIZES]
+                              for camel in self.camels}
 
     def start_game(self):
         self.game_on = True
@@ -97,7 +99,8 @@ class Game:
     # Leg
     def init_leg(self):
         self.pyramid_dices = self.camels.copy()
-        self.betting_tiles = {camel: [] for camel in self.camels}
+        self.betting_tiles = {camel: [prize for prize in LEG_BET_PRIZES]
+                              for camel in self.camels}
         self.rollers = []
         for player in self.players:
             player.reset_bets()
@@ -119,8 +122,9 @@ class Game:
 
     def leg_scoring_round(self):
         self.determine_leg_result()
-        for idx, player in enumerate(self.betting_tiles[self.orders[0]]):
-            player.win_leg_bet(idx)
+        leg_winner = self.orders[0]
+        for player in self.betting_tiles[leg_winner]:
+            player.earn_points(player.leg_bets[leg_winner.name], "leg betting winner")
         for player in self.betting_tiles[self.orders[1]]:
             player.earn_points(1, "leg betting second place")
         for camel in self.orders[2:]:

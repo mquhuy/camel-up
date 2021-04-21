@@ -54,6 +54,15 @@ def create_app():
                                                         if s.desert_player
                                                         is not None else None}
                                     for s in g.spaces},
+                         "leg_betting_tiles": {camel.name: bet[0] if bet else 0
+                                               for camel, bet in g.betting_tiles.items()}
+                        }, namespace='/message')
+
+    def update_leg_betting_info():
+        print("Sending update player info")
+        io.emit('info', {"type": "betting-tiles",
+                         "leg_betting_tiles": [{"color": camel.name, "card": bet[0] if bet else 0}
+                                               for camel, bet in g.betting_tiles.items()]
                         }, namespace='/message')
 
     def send_game_result():
@@ -87,11 +96,13 @@ def create_app():
                 update_players_info()
                 time.sleep(5)
                 update_board_info()
+                update_leg_betting_info()
                 time.sleep(5)
                 g.next_player()
             g.leg_scoring_round()
             update_players_info()
             update_board_info()
+            update_leg_betting_info()
         g.losing_camel = g.orders[-1]
         g.game_scoring_round()
         g.determine_game_result()

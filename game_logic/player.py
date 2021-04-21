@@ -16,13 +16,7 @@ class Player:
         self.is_human = is_human
 
     def reset_bets(self):
-        self.bets = {camel: False for camel in CAMELS}
-
-    def win_leg_bet(self, pos):
-        if pos > 2:
-            return
-        print("Player {} wins the bet at pos {}".format(self.name, pos + 1))
-        self.earn_points(LEG_BET_PRIZES[pos])
+        self.leg_bets = {camel: 0 for camel in CAMELS}
 
     def earn_points(self, points, reason=""):
         if reason != "":
@@ -43,13 +37,11 @@ class Player:
 
     def bet_leg(self, camel, game):
         print("Player {} bet that camel {} wins the leg".format(self.name, camel.name))
-        if (len(game.betting_tiles[camel]) < len(LEG_BET_PRIZES)) and not (self.bets[camel.name]):
-            game.betting_tiles[camel].append(self)
-            self.bets[camel.name] = True
+        if (len(game.betting_tiles[camel]) > 0) and (self.leg_bets[camel.name] == 0):
+            self.leg_bets[camel.name] = game.betting_tiles[camel].pop(0)
             return True
-        else:
-            print("Cannot bet since all the bets were taken")
-            return False
+        print("Cannot bet since all the bets were taken")
+        return False
 
     def bet_game_winning_camel(self, camel, game):
         print("Player {} bet that camel {} wins the game".format(self.name, camel.name))

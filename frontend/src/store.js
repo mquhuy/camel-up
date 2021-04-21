@@ -16,6 +16,7 @@ const state = {
   pID: "",
   actions: null,
   gameOn: false,
+  bettingTiles: [],
 };
 
 const mutations = {
@@ -28,6 +29,9 @@ const mutations = {
   UPDATE_ACTIONS(state, payload) {
     state.actions = payload;
   },
+  UPDATE_TILES(state, payload) {
+    state.bettingTiles = payload;
+  }
 };
 
 const actions = {
@@ -50,6 +54,9 @@ const actions = {
         break;
       case "action":
         context.commit("UPDATE_ACTIONS", payload);
+        break;
+      case "betting-tiles":
+        context.commit("UPDATE_TILES", payload.leg_betting_tiles);
         break;
       default:
         console.log(type);
