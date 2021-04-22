@@ -1,6 +1,6 @@
 <template>
   <div v-if="this.gameState == 'registration'" class="buttons">
-    <div id="registration" v-if="!registered">
+    <div id="registration">
       <div class="human-player">
         <input type="checkbox" v-model="addHuman"> Include Human Player
         <input v-if="addHuman" v-model="pName" placeholder="Enter your name">
@@ -8,6 +8,9 @@
       <input v-model.number="nP" type="number" placeholder="Number of bot players">
       <button @click="register(pName, nP)">Register</button>
     </div>
+    <button @click="start">Start Game</button>
+  </div>
+  <div v-if="this.gameState == 'replay'" class="buttons">
     <button @click="start">Start Game</button>
   </div>
   <div v-if="this.gameState == 'play'">
@@ -35,8 +38,8 @@
         <Player :player=player />
       </div>
     </div>
-    <button @click="reset">New game</button>
-    <button @click="next_player">End turn</button>
+    <button @click="reset">Replay</button>
+    <button @click="new_game">New Game</button>
   </div>
 </template>
 
@@ -75,6 +78,12 @@ export default {
       this.$store.dispatch("sendCommand", {command: "register",
                                            name: pName,
                                            nP: nP});
+    },
+    reset: function() {
+      this.$store.dispatch("sendCommand", {"command": "reset"});
+    },
+    new_game: function() {
+      this.$store.dispatch("sendCommand", {"command": "new_game"});
     }
   },
   components: {

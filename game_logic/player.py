@@ -15,6 +15,12 @@ class Player:
         self.desert_space = None
         self.is_human = is_human
 
+    def reset(self):
+        self.points = 0
+        self.final_bets = {camel: False for camel in CAMELS}
+        self.reset_bets()
+        self.desert_space = None
+
     def reset_bets(self):
         self.leg_bets = {camel: 0 for camel in CAMELS}
 

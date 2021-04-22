@@ -47,8 +47,8 @@ const mutations = {
     state.spaces = payload.spaces;
     state.registered = payload.registered;
     state.name = payload.name;
-    state.id = payload.id;
     state.bettingTiles = payload.leg_betting_tiles;
+    state.players = payload.Players;
   },
 };
 
@@ -101,8 +101,9 @@ const actions = {
     console.log(content);
   },
 
-  sendCommand(state, details) {
+  sendCommand({ state }, details) {
     const command = details.command;
+    console.log(command);
     details.id = state.id;
     socket.emit(command, details);
   },

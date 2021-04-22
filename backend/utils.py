@@ -98,15 +98,11 @@ def bot_running(io_instance, game):
             while not turn_success:
                 turn_success, actions = game.current_player().take_turn(game)
             send_action_info(io_instance, actions, game.current_player())
-            update_players_info(io_instance, game)
-            time.sleep(5)
             update_all_game_info(io_instance, game)
-            time.sleep(5)
+            time.sleep(2)
             game.next_player()
         game.leg_scoring_round()
-        update_players_info(io_instance, game)
-        update_board_info(io_instance, game)
-        update_leg_betting_info(io_instance, game)
+        update_all_game_info(io_instance, game)
     game.losing_camel = game.orders[-1]
     game.game_scoring_round()
     game.determine_game_result()

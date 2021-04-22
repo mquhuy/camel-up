@@ -41,15 +41,25 @@ def create_app():
         utils.emit_info(io, "game-start", {})
         g.game_state = "play"
         utils.update_all_game_info(io, g)
-        time.sleep(20)
+        time.sleep(5)
         g.start_game()
         utils.bot_running(io, g)
         g.game_state = "result"
         utils.send_game_result(io, g)
 
     @io.on('reset', namespace='/message')
-    def reset_game():
-        del g
+    def reset_game(param):
+        print(param)
+        g.reset()
+        g.game_state = "replay"
+        utils.update_all_game_info(io, g)
+
+    @io.on('new_game', namespace='/message')
+    def new_game(param):
+        g.reset()
+        g.players = []
+        utils.update_all_game_info(io, g)
+
 
     @io.on('next_player', namespace='/message')
     def next_player():

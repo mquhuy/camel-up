@@ -202,6 +202,22 @@ class Game:
         self.game_scoring_round()
         self.determine_game_result()
 
+    def reset(self):
+        for player in self.players:
+            player.reset()
+        for camel in self.camels:
+            camel.reset()
+        for space in self.spaces:
+            space.reset()
+        self.betting_tiles = {camel.name: [prize for prize in LEG_BET_PRIZES]
+                              for camel in self.camels}
+        self.final_bet_winning_camel = {camel.name: [] for camel in self.camels}
+        self.final_bet_losing_camel = {camel.name: [] for camel in self.camels}
+        self.game_state = "registration"
+        self.current_player_idx = 0
+        self.winning_camel = None
+        self.losing_camel = None
+
 if __name__ == "__main__":
     g = Game(n_init_players=5)
     g.start()

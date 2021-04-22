@@ -42,6 +42,11 @@ class Space:
         self.desert_player = None
         self.desert_state = 0
 
+    def reset(self):
+        self.camels = []
+        self.desert_player = None
+        self.desert_state = 0
+
 
 class Camel:
     def __init__(self, name):
@@ -59,3 +64,6 @@ class Camel:
         self.position = space
         if not self in space.camels:
             space.camels.append(self)
+
+    def reset(self):
+        self.position = None
