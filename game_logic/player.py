@@ -14,7 +14,6 @@ class Player:
         self.final_bets = {camel: False for camel in CAMELS}
         self.desert_space = None
         self.is_human = is_human
-        self.game_state = "registration"
 
     def reset_bets(self):
         self.leg_bets = {camel: 0 for camel in CAMELS}

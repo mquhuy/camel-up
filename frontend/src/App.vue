@@ -11,32 +11,32 @@
     <button @click="start">Start Game</button>
   </div>
   <div v-if="this.gameState == 'play'">
-  <div class="leg-betting-tiles">
-    <LegBettingTile v-for="tile in this.bettingTiles" :key="tile.camel" :tile="tile" />
-  </div>
-  <div class="container">
-    <div v-if="this.spaces" class="game-board">
-      <Space v-for="space in this.spaces" :key="space.id" :space="space" />
-      <div class="pyramid">
-        <Pyramid :action="this.actions" :key="this.actions" />
-      </div>
+    <div class="leg-betting-tiles">
+      <LegBettingTile v-for="tile in this.bettingTiles" :key="tile.camel" :tile="tile" />
     </div>
-    <div class="grade-board">
-      <div id="players" v-for="player in this.players" :key="player.id">
-        <Player :player=player />
+    <div class="container">
+      <div v-if="this.spaces" class="game-board">
+        <Space v-for="space in this.spaces" :key="space.id" :space="space" />
+        <div class="pyramid">
+          <Pyramid :action="this.actions" :key="this.actions" />
+        </div>
       </div>
-    </div>
-    <div class="result" v-if="this.gameState == 'result'">
-      <p>Final results</p>
       <div class="grade-board">
-        <div id="players" v-for="player in this.results" :key="player.id">
+        <div id="players" v-for="player in this.players" :key="player.id">
           <Player :player=player />
         </div>
       </div>
-      <button @click="reset">New game</button>
-      <button @click="next_player">End turn</button>
     </div>
   </div>
+  <div class="result" v-if="this.gameState == 'result'">
+    <p>Final results</p>
+    <div class="grade-board">
+      <div id="players" v-for="player in this.results" :key="player.id">
+        <Player :player=player />
+      </div>
+    </div>
+    <button @click="reset">New game</button>
+    <button @click="next_player">End turn</button>
   </div>
 </template>
 
