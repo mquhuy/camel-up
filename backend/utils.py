@@ -90,22 +90,30 @@ def send_game_result(io_instance, game):
     emit_info(io_instance, "game-end-result", info)
 
 
-def bot_running(io_instance, game):
-    while not game.current_player().is_human and game.winning_camel is None:
+def handle_actions(io_instance, game, actions):
+    send_action_info(io_instance, actions, game.current_player())
+    update_all_game_info(io_instance, game)
+    time.sleep(2)
+    game.next_player()
+    update_players_info(io_instance, game)
+
+
+def run_a_game(io_instance, game):
+    while not game.check_end_leg():
+        if game.current_player().is_human:
+            return
+        turn_success = False
+        while not turn_success:
+            turn_success, actions = game.current_player().take_turn(game)
+        handle_actions(io_instance, game, actions)
+    game.leg_scoring_round()
+    update_all_game_info(io_instance, game)
+    if game.winning_camel is None:
         game.init_leg()
-        while not game.check_end_leg():
-            turn_success = False
-            while not turn_success:
-                turn_success, actions = game.current_player().take_turn(game)
-            send_action_info(io_instance, actions, game.current_player())
-            update_all_game_info(io_instance, game)
-            time.sleep(2)
-            game.next_player()
-        game.leg_scoring_round()
-        update_all_game_info(io_instance, game)
+        return run_a_game(io_instance, game)
     game.losing_camel = game.orders[-1]
     game.game_scoring_round()
     game.determine_game_result()
+    game.game_state = "result"
     update_all_game_info(io_instance, game)
     send_game_result(io_instance, game)
-    game.game_state = "result"

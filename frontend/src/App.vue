@@ -29,6 +29,7 @@
           <Player :player=player />
         </div>
       </div>
+      <button v-if="isCurrent" @click="roll">Roll</button>
     </div>
   </div>
   <div class="result" v-if="this.gameState == 'result'">
@@ -52,7 +53,14 @@ import { mapState } from 'vuex';
 
 export default {
   name: "App",
-  computed: mapState([
+  computed: {
+    isCurrent() {
+      console.log(this.players.find(player => player.id == this.id));
+      console.log(this.players);
+      console.log(this.id);
+      return this.players.find(player => player.id == this.id).current;
+    },
+    ...mapState([
       "name",
       "id",
       "registered",
@@ -62,7 +70,8 @@ export default {
       "actions",
       "bettingTiles",
       "results",
-  ]),
+    ]),
+  },
   data() {
     return {
       "nP": 0,
@@ -84,7 +93,11 @@ export default {
     },
     new_game: function() {
       this.$store.dispatch("sendCommand", {"command": "new_game"});
-    }
+    },
+    roll: function() {
+      this.$store.dispatch("sendCommand", {"command": "action_choice",
+                                           "actions": [0, 0, 1, 1]});
+    },
   },
   components: {
     Player,

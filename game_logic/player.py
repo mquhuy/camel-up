@@ -93,16 +93,18 @@ class Player:
         self.desert_space = None
 
     def take_turn(self, game, kargs=[]):
+        choices = ["roll", "bet leg", "bet end win", "bet end lose", "set desert"]
         if not self.is_human:
-            choice = random.choice(["roll", "bet leg", "bet end win", "bet end lose", "set desert"])
+            choice_idx = random.randrange(len(choices))
             space_idx = random.randrange(16)
             state = random.choice([-1, 1])
             camel_idx = random.randrange(5)
-            camel = game.camels[camel_idx]
-            space = game.spaces[space_idx]
-            actions = (choice, space, state, camel)
         else:
-            actions = kargs
+            choice_idx, space_idx, state, camel_idx = kargs
+        choice = choices[choice_idx]
+        camel = game.camels[camel_idx]
+        space = game.spaces[space_idx]
+        actions = (choice, space, state, camel)
         return self.perform_turn_actions(game, actions)
 
     def perform_turn_actions(self, game, actions):

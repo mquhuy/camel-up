@@ -43,9 +43,8 @@ def create_app():
         utils.update_all_game_info(io, g)
         time.sleep(5)
         g.start_game()
-        utils.bot_running(io, g)
-        g.game_state = "result"
-        utils.send_game_result(io, g)
+        g.init_leg()
+        utils.run_a_game(io, g)
 
     @io.on('reset', namespace='/message')
     def reset_game(param):
@@ -68,6 +67,13 @@ def create_app():
         print(current_player)
         io.emit('info', {'type': 'current_player',
                          'info': current_player}, namespace='/message')
+
+    @io.on('action_choice', namespace='/message')
+    def execute_action(package):
+        _, actions = g.current_player().take_turn(g, package["actions"])
+        utils.handle_actions(io, g, actions)
+        utils.run_a_game(io, g)
+
 
     @io.on('connect', namespace='/message')
     def message_connect():
