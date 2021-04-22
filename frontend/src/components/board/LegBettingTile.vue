@@ -1,6 +1,6 @@
 <template>
-  <div class="leg-betting-tile" :class="tile.color">
-      <p class="card">{{ tile.card }}</p>
+  <div class="leg-betting-tile" :class="tile.camel">
+      <p class="card">{{ tile.bet }}</p>
   </div>
 </template>
 

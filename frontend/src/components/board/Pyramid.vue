@@ -20,13 +20,7 @@
 <script>
 export default {
   name: "Pyramid",
-  props: ["action_info"],
-  data () {
-    return {
-      action: this.action_info,
-      roll: "roll",
-    }
-  }
+  props: ["action"],
 };
 </script>
 

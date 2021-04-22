@@ -14,6 +14,7 @@ class Player:
         self.final_bets = {camel: False for camel in CAMELS}
         self.desert_space = None
         self.is_human = is_human
+        self.game_state = "registration"
 
     def reset_bets(self):
         self.leg_bets = {camel: 0 for camel in CAMELS}
@@ -35,10 +36,10 @@ class Player:
         game.rollers.append(self)
         return True, camel, steps
 
-    def bet_leg(self, camel, game):
-        print("Player {} bet that camel {} wins the leg".format(self.name, camel.name))
-        if (len(game.betting_tiles[camel]) > 0) and (self.leg_bets[camel.name] == 0):
-            self.leg_bets[camel.name] = game.betting_tiles[camel].pop(0)
+    def bet_leg(self, camel_name, game):
+        print("Player {} bet that camel {} wins the leg".format(self.name, camel_name))
+        if (len(game.betting_tiles[camel_name]) > 0) and (self.leg_bets[camel_name] == 0):
+            self.leg_bets[camel_name] = game.betting_tiles[camel_name].pop(0)
             return True
         print("Cannot bet since all the bets were taken")
         return False
@@ -52,21 +53,21 @@ class Player:
             elif points > 0:
                 self.lose_points(1, "losing the leg bet")
 
-    def bet_game_winning_camel(self, camel, game):
-        print("Player {} bet that camel {} wins the game".format(self.name, camel.name))
-        if (not (self.final_bets[camel.name])):
-            game.final_bet_winning_camel[camel].append(self)
-            self.final_bets[camel.name] = True
+    def bet_game_winning_camel(self, camel_name, game):
+        print("Player {} bets that camel {} wins the game".format(self.name, camel_name))
+        if (not (self.final_bets[camel_name])):
+            game.final_bet_winning_camel[camel_name].append(self)
+            self.final_bets[camel_name] = True
             return True
         else:
             print("Cannot bet since all the bets were taken")
             return False
 
-    def bet_game_losing_camel(self, camel, game):
-        print("Player {} bet that camel {} loses the game".format(self.name, camel.name))
-        if (not (self.final_bets[camel.name])):
-            game.final_bet_losing_camel[camel].append(self)
-            self.final_bets[camel.name] = True
+    def bet_game_losing_camel(self, camel_name, game):
+        print("Player {} bet that camel {} loses the game".format(self.name, camel_name))
+        if (not (self.final_bets[camel_name])):
+            game.final_bet_losing_camel[camel_name].append(self)
+            self.final_bets[camel_name] = True
             return True
         else:
             print("Cannot bet since all the bets were taken")
@@ -106,11 +107,11 @@ class Player:
         if action_choice == "roll":
             turn_success, camel, steps = self.roll_dice(game)
         elif action_choice == "bet leg":
-            turn_success = self.bet_leg(camel, game)
+            turn_success = self.bet_leg(camel.name, game)
         elif action_choice == "bet end win":
-            turn_success = self.bet_game_winning_camel(camel, game)
+            turn_success = self.bet_game_winning_camel(camel.name, game)
         elif action_choice == "bet end lose":
-            turn_success = self.bet_game_losing_camel(camel, game)
+            turn_success = self.bet_game_losing_camel(camel.name, game)
         elif action_choice == "set desert":
             turn_success = self.set_desert(game, space, state)
         return turn_success, {'action': action_choice,

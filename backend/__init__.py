@@ -4,8 +4,10 @@ import time
 
 try:
     from .game_logic import game
+    import utils
 except (ImportError, ValueError):
     from game_logic import game
+    from . import utils
 
 
 def create_app():
@@ -16,7 +18,6 @@ def create_app():
 
     io = SocketIO(app, path='/backend/socket.io')
     g = game.Game()
-
 
     @io.on('register', namespace='/message')
     def register_player(data):
@@ -30,88 +31,25 @@ def create_app():
             success, new_id = g.register(name)
         else:
             success, new_id = True, 100
-        io.emit('info', {"type": "registration_result",
-                         "registered": str(success),
-                         "player_id": new_id,
-                         "player_name": name}, namespace='/message')
-
-    def update_players_info():
-        print("Sending update player info")
-        io.emit('info', {"type": "players",
-            "Players": [{'id': p.p_id, 'name': p.name,
-                        'points': p.points,
-                        'current': (p.p_id == g.current_player().p_id)}
-                        for p in g.players],
-                         }, namespace='/message')
-
-    def update_board_info():
-        print("Sending update player info")
-        io.emit('info', {"type": "board",
-                         "spaces": {s.id+1: {'id': s.id+1,
-                                             'camels': [c.name for c in s.camels],
-                                             'desert': s.desert_state,
-                                             'desertP': s.desert_player.name
-                                                        if s.desert_player
-                                                        is not None else None}
-                                    for s in g.spaces},
-                         "leg_betting_tiles": {camel.name: bet[0] if bet else 0
-                                               for camel, bet in g.betting_tiles.items()}
-                        }, namespace='/message')
-
-    def update_leg_betting_info():
-        print("Sending update player info")
-        io.emit('info', {"type": "betting-tiles",
-                         "leg_betting_tiles": [{"color": camel.name, "card": bet[0] if bet else 0}
-                                               for camel, bet in g.betting_tiles.items()]
-                        }, namespace='/message')
-
-    def send_game_result():
-        io.emit('info', {'type': 'result',
-                         'winning_camel': g.winning_camel.name,
-                         'winning_player': g.winning_player}, namespace='/message')
-
-    def send_action_info(actions, player):
-        actions.update({"type": "action", "player": player.name})
-        io.emit('info', actions, namespace='/message')
+        utils.emit_info(io, "registration-result",
+                        {"registered": str(success),
+                         "id": new_id,
+                         "name": name})
 
     @io.on('start', namespace='/message')
     def start_game(_param):
-        io.emit("info", {"type": "game-start"}, namespace="/message")
+        utils.emit_info(io, "game-start", {})
+        g.game_state = "play"
+        utils.update_all_game_info(io, g)
         time.sleep(20)
         g.start_game()
-        update_players_info()
-        bot_running()
-        io.emit('info', {'type': 'game-end'})
+        utils.bot_running(io, g)
+        g.game_state = "result"
+        utils.send_game_result(io, g)
 
     @io.on('reset', namespace='/message')
     def reset_game():
         del g
-
-    def bot_running():
-        while not g.current_player().is_human and g.winning_camel is None:
-            g.init_leg()
-            while not g.check_end_leg():
-                turn_success = False
-                while not turn_success:
-                    turn_success, actions = g.current_player().take_turn(g)
-                send_action_info(actions, g.current_player())
-                update_players_info()
-                time.sleep(5)
-                update_board_info()
-                update_leg_betting_info()
-                time.sleep(5)
-                g.next_player()
-            g.leg_scoring_round()
-            update_players_info()
-            update_board_info()
-            update_leg_betting_info()
-        g.losing_camel = g.orders[-1]
-        g.game_scoring_round()
-        g.determine_game_result()
-        update_players_info()
-        update_board_info()
-        send_game_result()
-        g.game_on = False
 
     @io.on('next_player', namespace='/message')
     def next_player():
@@ -124,8 +62,7 @@ def create_app():
     @io.on('connect', namespace='/message')
     def message_connect():
         print("[Frontend] Connected with Websocket")
-        update_players_info()
-        update_board_info()
+        utils.update_all_game_info(io, g)
 
     @io.on('disconnect', namespace='/message')
     def message_disconnect():

@@ -20,15 +20,15 @@ class Game:
         self.winning_camel = None
         self.losing_camel = None
         self.current_player_idx = 0
-        self.final_bet_winning_camel = {camel: [] for camel in self.camels}
-        self.final_bet_losing_camel = {camel: [] for camel in self.camels}
+        self.final_bet_winning_camel = {camel.name: [] for camel in self.camels}
+        self.final_bet_losing_camel = {camel.name: [] for camel in self.camels}
         self.initialize_players(n_init_players)
-        self.game_on = False
-        self.betting_tiles = {camel: [prize for prize in LEG_BET_PRIZES]
+        self.game_state = "registration"
+        self.betting_tiles = {camel.name: [prize for prize in LEG_BET_PRIZES]
                               for camel in self.camels}
 
     def start_game(self):
-        self.game_on = True
+        self.game_state = "play"
         init_locs = self.roll_init_dice()
         print("Initialized camel's starting position:")
         camels = list(init_locs.keys())
@@ -99,7 +99,7 @@ class Game:
     # Leg
     def init_leg(self):
         self.pyramid_dices = self.camels.copy()
-        self.betting_tiles = {camel: [prize for prize in LEG_BET_PRIZES]
+        self.betting_tiles = {camel.name: [prize for prize in LEG_BET_PRIZES]
                               for camel in self.camels}
         self.rollers = []
         for player in self.players:
@@ -153,9 +153,9 @@ class Game:
         self.scores = {player.name: player.points for player in self.players}
         orders = sorted(self.scores, key=self.scores.get, reverse=True)
         self.winning_player = orders[0]
-        self.scores = {player: self.scores[player] for player in orders}
+        self.final_scores = {player: self.scores[player] for player in orders}
         print("Scoring table:")
-        print(self.scores)
+        print(self.final_scores)
 
     def can_put_desert(self, player, space):
         if space.id == 0:
@@ -197,6 +197,7 @@ class Game:
             self.run_leg()
             self.report()
             print("------------------- End leg ---------------------")
+        self.game_state = "result"
         self.losing_camel = self.orders[-1]
         self.game_scoring_round()
         self.determine_game_result()
