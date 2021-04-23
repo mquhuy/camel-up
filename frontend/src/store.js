@@ -129,6 +129,9 @@ const actions = {
       case "dessert":
         dispatch("sendAction", [4, params.space.id - 1, -1, "blue"]);
         break;
+      case "roll":
+        dispatch("sendAction", [0, 0, 1, ""]);
+        break;
     }
   },
 
