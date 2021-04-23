@@ -38,6 +38,7 @@ div {
   width: 20px;
   font-size: 25px;
   color: white;
+  border: 1px solid black;
 }
 .white {
   background-color: white;

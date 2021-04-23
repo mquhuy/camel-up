@@ -1,5 +1,5 @@
 from flask import Flask
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit, join_room, leave_room
 import time
 
 try:
@@ -21,20 +21,19 @@ def create_app():
 
     @io.on('register', namespace='/message')
     def register_player(data):
-        print(data)
         name = data["name"]
         n_players = data["nP"]
-        print(n_players)
         g.initialize_players(int(n_players))
         print("Received name: " + name)
         if name != "":
             success, new_id = g.register(name)
         else:
-            success, new_id = True, 100
+            success, new_id = True, -100
+        join_room(new_id)
         utils.emit_info(io, "registration-result",
                         {"registered": str(success),
                          "id": new_id,
-                         "name": name})
+                         "name": name}, room=new_id)
 
     @io.on('start', namespace='/message')
     def start_game(_param):
@@ -75,10 +74,24 @@ def create_app():
         utils.run_a_game(io, g)
 
 
+    @io.on('reConnect', namespace='/message')
+    def reconnect_player(connect_player):
+        print(connect_player)
+        player = g.find_player_with_id(connect_player['id'])
+        room = connect_player['id']
+        join_room(room)
+        if player is None:
+            return utils.update_all_game_info(io, g)
+        utils.emit_info(io, "registration-result",
+                        {"registered": True,
+                         "id": player.id,
+                         "name": player.p_name}, room=room)
+        utils.update_all_game_info(io, g, room)
+
+
     @io.on('connect', namespace='/message')
     def message_connect():
         print("[Frontend] Connected with Websocket")
-        utils.update_all_game_info(io, g)
 
     @io.on('disconnect', namespace='/message')
     def message_disconnect():

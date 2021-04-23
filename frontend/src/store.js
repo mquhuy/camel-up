@@ -1,4 +1,5 @@
 import { createStore } from "vuex";
+import createPersistedState from "vuex-persistedstate";
 import socket from "./socket";
 
 const state = {
@@ -118,6 +119,7 @@ const store = createStore({
   mutations,
   actions,
   getters,
+  plugins: [createPersistedState()],
 });
 
 export default store;

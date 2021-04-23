@@ -80,6 +80,13 @@ export default {
       "pName": "",
     }
   },
+  mounted() {
+    console.log("Mounted");
+    if (this.id > 0) {
+      this.$store.dispatch("sendCommand", {command: "reConnect",
+                                           id: this.id});
+    };
+  },
   methods: {
     start: function() {
       this.$store.dispatch("sendCommand", {command: "start"});

@@ -57,6 +57,12 @@ class Game:
         self.players.append(Player(new_player_name, new_id, human))
         return (True, str(new_id))
 
+    def find_player_with_id(self, id_to_find):
+        for player in self.players:
+            if player.p_id == id_to_find:
+                return player
+        return None
+
     def move(self, camel, steps):
         new_pos = camel.pos_id() + steps
         if new_pos >= len(self.spaces):

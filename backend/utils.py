@@ -50,44 +50,47 @@ def generate_all_game_info(game):
     return info
 
 
-def emit_info(io_instance, info_type, info):
+def emit_info(io_instance, info_type, info, room=None):
     info.update({"type": info_type})
-    io_instance.emit("info", info, namespace="/message")
+    if room is not None:
+        io_instance.emit("info", info, to=room)
+    else:
+        io_instance.emit("info", info, namespace="/message")
 
 
-def send_action_info(io_instance, actions, player):
+def send_action_info(io_instance, actions, player, room=None):
     actions.update({"player": player.name})
-    emit_info(io_instance, "action", {"action": actions})
+    emit_info(io_instance, "action", {"action": actions}, room)
 
 
-def update_players_info(io_instance, game):
+def update_players_info(io_instance, game, room=None):
     print("Sending update player info")
     info = generate_players_info(game)
     info.update(generate_leg_betting_info(game))
-    emit_info(io_instance, "players", info)
+    emit_info(io_instance, "players", info, room)
 
 
-def update_leg_betting_info(io_instance, game):
+def update_leg_betting_info(io_instance, game, room=None):
     info = generate_leg_betting_info(game)
     print("Sending update leg betting info")
-    emit_info(io_instance, "betting-tiles", info)
+    emit_info(io_instance, "betting-tiles", info, room)
 
 
-def update_board_info(io_instance, game):
+def update_board_info(io_instance, game, room=None):
     print("Sending update player info")
     info = generate_board_info(game)
     info.update(generate_leg_betting_info(game))
-    emit_info(io_instance, "board", info)
+    emit_info(io_instance, "board", info, room)
 
 
-def update_all_game_info(io_instance, game):
+def update_all_game_info(io_instance, game, room=None):
     info = generate_all_game_info(game)
-    emit_info(io_instance, "all", info)
+    emit_info(io_instance, "all", info, room)
 
 
-def send_game_result(io_instance, game):
+def send_game_result(io_instance, game, room=None):
     info = generate_game_result_info(game)
-    emit_info(io_instance, "game-end-result", info)
+    emit_info(io_instance, "game-end-result", info, room)
 
 
 def handle_actions(io_instance, game, actions):
