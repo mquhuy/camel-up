@@ -2,8 +2,10 @@
     <div :class="{ active: player.current }">
       {{ player.name }}: {{ player.points }}
     </div>
-    <div v-for="bet in bets" :key="bet.camel" :class="bet.camel" class="card">
-      {{ bet.bet }}
+    <div v-for="bet in bets" :key="bet.camel" :class="bet.camel">
+      <div v-for="card in bet.bet" :key="card" class="card">
+          {{ card }}
+      </div>
     </div>
 </template>
 
@@ -14,7 +16,7 @@ export default {
   computed: {
     bets: function() {
       if (this.player.leg_bets) {
-        return this.player.leg_bets.filter(bet => bet.bet > 0);
+        return this.player.leg_bets.filter(bet => bet.bet.length > 0);
       }
       return [];
     },
@@ -30,11 +32,9 @@ export default {
 }
 div {
   display: inline-block;
-  margin: 0 10px;
-  font-size: 40px;
 }
 .card {
-  margin: 40px 0 0;
+  font-size: 40px;
   width: 20px;
   font-size: 25px;
   color: white;

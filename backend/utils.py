@@ -23,7 +23,7 @@ def generate_board_info(game):
 
 def generate_leg_betting_info(game):
     return {
-        "leg_betting_tiles": [{'camel': camel, 'bet': bet[0] if bet else 0}
+      "leg_betting_tiles": [{'camel': camel, 'bet': bet[0] if bet else 0}
                               for camel, bet in game.betting_tiles.items()]
     }
 

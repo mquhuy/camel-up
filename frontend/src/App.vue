@@ -15,11 +15,15 @@
   </div>
   <div v-if="this.gameState == 'play'">
     <div class="leg-betting-tiles">
-      <LegBettingTile v-for="tile in this.bettingTiles" :key="tile.camel" :tile="tile" />
+      <LegBettingTile v-for="tile in this.bettingTiles" :key="tile.camel" :tile="tile"
+                      @click="performMove({'action': 'bet-leg', 'camel': tile.camel})"/>
     </div>
     <div class="container">
       <div v-if="this.spaces" class="game-board">
-        <Space v-for="space in this.spaces" :key="space.id" :space="space" />
+        <Space v-for="space in this.spaces"
+               :key="space.id"
+               :space="space"
+               @click="performMove({'action': 'dessert', 'space': space})"/>
         <div class="pyramid">
           <Pyramid :action="this.actions" :key="this.actions" />
         </div>
@@ -81,7 +85,6 @@ export default {
     }
   },
   mounted() {
-    console.log("Mounted");
     if (this.id > 0) {
       this.$store.dispatch("sendCommand", {command: "reConnect",
                                            id: this.id});
@@ -103,8 +106,14 @@ export default {
       this.$store.dispatch("sendCommand", {"command": "new_game"});
     },
     roll: function() {
-      this.$store.dispatch("sendCommand", {"command": "action_choice",
-                                           "actions": [0, 0, 1, 1]});
+      this.$store.dispatch("sendAction", [0, 0, 1, ""]);
+    },
+    performMove: function(params) {
+      if (! this.isCurrent ) {
+        console.log("Wait until your turn");
+        return;
+      }
+     this.$store.dispatch("performMove", params);
     },
   },
   components: {

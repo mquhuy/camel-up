@@ -63,6 +63,12 @@ class Game:
                 return player
         return None
 
+    def find_camel_with_name(self, name_to_find):
+        for camel in self.camels:
+            if camel.name == name_to_find:
+                return camel
+        return None
+
     def move(self, camel, steps):
         new_pos = camel.pos_id() + steps
         if new_pos >= len(self.spaces):

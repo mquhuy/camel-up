@@ -69,7 +69,11 @@ def create_app():
 
     @io.on('action_choice', namespace='/message')
     def execute_action(package):
-        _, actions = g.current_player().take_turn(g, package["actions"])
+        turn_success, actions = g.current_player().take_turn(g, package["actions"])
+        print(turn_success)
+        if not turn_success:
+            utils.emit_info(io, "action-error", {"error": actions["log"]})
+            return
         utils.handle_actions(io, g, actions)
         utils.run_a_game(io, g)
 

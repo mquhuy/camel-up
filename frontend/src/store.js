@@ -71,6 +71,9 @@ const actions = {
       case "action":
         context.commit("UPDATE_ACTIONS", payload);
         break;
+      case "action-error":
+        console.log(payload.error);
+        break;
       case "betting-tiles":
         context.commit("UPDATE_TILES", payload);
         break;
@@ -104,9 +107,38 @@ const actions = {
 
   sendCommand({ state }, details) {
     const command = details.command;
-    console.log(command);
     details.id = state.id;
     socket.emit(command, details);
+  },
+
+  performMove({ dispatch }, params) {
+    const action = params.action;
+    switch (action){
+      case "bet-leg":
+        dispatch("legBet", params.camel);
+        break;
+      case "dessert":
+        dispatch("sendAction", [4, params.space.id - 1, -1, "blue"]);
+        break;
+    }
+  },
+
+  legBet({ state, dispatch }, camel_name) {
+    if (! state.bettingTiles ) {
+      return;
+    };
+    const camel = state.bettingTiles.find(camel => camel.camel == camel_name);
+    console.log(camel);
+    if (camel.bet == 0) {
+      console.log("All cards in this tile were taken.");
+      return;
+    };
+    dispatch("sendAction", [1, 0, 0, camel_name]);
+  },
+
+  sendAction( { dispatch }, actions) {
+    dispatch("sendCommand", {"command": "action_choice",
+                             "actions": actions});
   },
 };
 
