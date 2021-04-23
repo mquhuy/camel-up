@@ -22,7 +22,7 @@ class Player:
         self.desert_space = None
 
     def reset_bets(self):
-        self.leg_bets = {camel: 0 for camel in CAMELS}
+        self.leg_bets = {camel: [] for camel in CAMELS}
 
     def earn_points(self, points, reason=""):
         if reason != "":
@@ -44,19 +44,19 @@ class Player:
     def bet_leg(self, camel_name, game):
         print("Player {} bet that camel {} wins the leg".format(self.name, camel_name))
         if (len(game.betting_tiles[camel_name]) > 0) and (self.leg_bets[camel_name] == 0):
-            self.leg_bets[camel_name] = game.betting_tiles[camel_name].pop(0)
+            self.leg_bets[camel_name] += game.betting_tiles[camel_name].pop(0)
             return True
         print("Cannot bet since all the bets were taken")
         return False
 
     def leg_bet_scoring(self, orders):
         for camel, points in self.leg_bets.items():
-            if camel == orders[0].name and points > 0:
-                self.earn_points(points, "leg betting winner")
-            elif camel == orders[1].name and points > 0:
-                self.earn_points(1, "leg betting second place")
-            elif points > 0:
-                self.lose_points(1, "losing the leg bet")
+            if camel == orders[0].name and len(points) > 0:
+                self.earn_points(sum(points), "leg betting winner")
+            elif camel == orders[1].name and len(points) > 0:
+                self.earn_points(len(points), "leg betting second place")
+            elif len(points) > 0:
+                self.lose_points(len(points), "losing the leg bet")
 
     def bet_game_winning_camel(self, camel_name, game):
         print("Player {} bets that camel {} wins the game".format(self.name, camel_name))
