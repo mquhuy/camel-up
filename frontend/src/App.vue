@@ -55,10 +55,11 @@ export default {
   name: "App",
   computed: {
     isCurrent() {
-      console.log(this.players.find(player => player.id == this.id));
-      console.log(this.players);
-      console.log(this.id);
-      return this.players.find(player => player.id == this.id).current;
+      if (! this.gameState == "play" || this.id < 0) {
+        return false;
+      }
+      const localPlayer = this.players.find(player => player.id == this.id);
+      return localPlayer.current;
     },
     ...mapState([
       "name",

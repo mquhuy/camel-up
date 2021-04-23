@@ -110,7 +110,7 @@ const actions = {
 };
 
 const getters = {
-    isConnected: state => state.isConnected,
+  isConnected: state => state.isConnected,
 };
 
 const store = createStore({

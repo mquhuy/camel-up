@@ -1,10 +1,10 @@
 <template>
-    <div v-bind:class="{ active: player.current }">
-        {{ player.name }}: {{ player.points }}
+    <div :class="{ active: player.current }">
+      {{ player.name }}: {{ player.points }}
     </div>
-       <div v-for="bet in bets" :key="bet.camel" :class="bet.camel" class="card">
-            {{ bet.bet }}
-        </div>
+    <div v-for="bet in bets" :key="bet.camel" :class="bet.camel" class="card">
+      {{ bet.bet }}
+    </div>
 </template>
 
 <script>
