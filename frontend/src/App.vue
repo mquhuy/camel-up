@@ -15,15 +15,19 @@
   </div>
   <div v-if="this.gameState == 'play'">
     <div class="leg-betting-tiles">
-      <LegBettingTile v-for="tile in this.bettingTiles" :key="tile.camel" :tile="tile"
-                      @click="performMove({'action': 'bet-leg', 'camel': tile.camel})"/>
+      <LegBettingTile v-for="tile in this.bettingTiles"
+                      :key="tile.camel"
+                      :tile="tile"
+                      :inactive="!isCurrent || turnEnd"
+                      @click="performMove({'action': 'bet-leg', 'camel': tile})" />
     </div>
     <div class="container">
       <div v-if="this.spaces" class="game-board">
         <Space v-for="space in this.spaces"
                :key="space.id"
                :space="space"
-               @click="performMove({'action': 'dessert', 'space': space})"/>
+               @click="performMove({'action': 'dessert', 'space': space})"
+               :disable="this.isCurrent"/>
         <div class="pyramid">
           <Pyramid :action="this.actions" :key="this.actions" />
         </div>
@@ -33,7 +37,7 @@
           <Player :player=player />
         </div>
       </div>
-      <button v-if="isCurrent" @click="roll">Roll</button>
+      <button :disabled="!isCurrent || turnEnd" @click="roll">Roll</button>
     </div>
   </div>
   <div class="result" v-if="this.gameState == 'result'">
@@ -75,6 +79,7 @@ export default {
       "actions",
       "bettingTiles",
       "results",
+      "turnEnd",
     ]),
   },
   data() {
@@ -113,6 +118,9 @@ export default {
         console.log("Wait until your turn");
         return;
       }
+     if ( this.turnEnd ) {
+        return;
+     }
      this.$store.dispatch("performMove", params);
     },
   },

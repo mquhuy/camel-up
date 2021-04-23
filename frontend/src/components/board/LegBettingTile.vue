@@ -1,13 +1,13 @@
 <template>
-  <div class="leg-betting-tile" :class="tile.camel">
+    <div class="leg-betting-tile" :class="tile.camel" :disabled="inactive">
       <p class="card">{{ tile.bet }}</p>
-  </div>
+    </div>
 </template>
 
 <script>
 export default {
   name: "LegBettingTile",
-  props: ["tile"],
+  props: ["tile", "inactive"],
 };
 </script>
 

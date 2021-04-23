@@ -15,6 +15,7 @@ const state = {
   gameState: "registration",
   results: {},
   bettingTiles: [],
+  turnEnd: false,
 };
 
 const mutations = {
@@ -51,6 +52,9 @@ const mutations = {
     state.bettingTiles = payload.leg_betting_tiles;
     state.players = payload.Players;
   },
+  UPDATE_TURN_STATUS(state, payload) {
+    state.turnEnd = payload;
+  },
 };
 
 const actions = {
@@ -73,6 +77,10 @@ const actions = {
         break;
       case "action-error":
         console.log(payload.error);
+        context.commit("UPDATE_TURN_STATUS", false);
+        break;
+      case "action-success":
+        context.commit("UPDATE_TURN_STATUS", false);
         break;
       case "betting-tiles":
         context.commit("UPDATE_TILES", payload);
@@ -82,6 +90,7 @@ const actions = {
         break;
       case "game-start":
         context.commit("UPDATE_GAME_STATE", payload);
+        context.commit("UPDATE_TURN_STATUS", false);
         break;
       case "game-end-result":
         context.commit("UPDATE_GAME_RESULT", payload);
@@ -123,20 +132,19 @@ const actions = {
     }
   },
 
-  legBet({ state, dispatch }, camel_name) {
+  legBet({ state, dispatch }, camel) {
     if (! state.bettingTiles ) {
       return;
     };
-    const camel = state.bettingTiles.find(camel => camel.camel == camel_name);
-    console.log(camel);
     if (camel.bet == 0) {
       console.log("All cards in this tile were taken.");
       return;
     };
-    dispatch("sendAction", [1, 0, 0, camel_name]);
+    dispatch("sendAction", [1, 0, 0, camel.camel]);
   },
 
-  sendAction( { dispatch }, actions) {
+  sendAction( { dispatch, commit }, actions) {
+    commit("UPDATE_TURN_STATUS", true);
     dispatch("sendCommand", {"command": "action_choice",
                              "actions": actions});
   },
