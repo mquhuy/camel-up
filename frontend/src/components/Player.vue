@@ -2,8 +2,8 @@
     <div :class="{ active: player.current }">
       {{ player.name }}: {{ player.points }}
     </div>
-    <div v-for="bet in bets" :key="bet.camel" :class="bet.camel">
-      <div v-for="card in bet.bet" :key="card" class="card">
+    <div v-for="bet in bets" :key="bet.camel">
+      <div v-for="card in bet.bet" :key="card" class="card" :class="bet.camel">
           {{ card }}
       </div>
     </div>

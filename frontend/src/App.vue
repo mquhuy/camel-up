@@ -14,30 +14,17 @@
     <button @click="start">Start Game</button>
   </div>
   <div v-if="this.gameState == 'play'">
-    <div class="leg-betting-tiles">
-      <LegBettingTile v-for="tile in this.bettingTiles"
-                      :key="tile.camel"
-                      :tile="tile"
-                      :inactive="!isCurrent || turnEnd"
-                      @click="performMove({'action': 'bet-leg', 'camel': tile})" />
-    </div>
     <div class="container">
-      <div v-if="this.spaces" class="game-board">
-        <Space v-for="space in this.spaces"
-               :key="space.id"
-               :space="space"
-               @click="performMove({'action': 'dessert', 'space': space})"
-               :disable="this.isCurrent"/>
-        <div class="pyramid">
-          <Pyramid :action="this.actions" :key="this.actions" />
-        </div>
-      </div>
+      <Board :tiles="this.bettingTiles"
+             :spaces="this.spaces"
+             :actions="this.actions"
+             :inActive="!this.isCurrent || this.turnEnd" />
       <div class="grade-board">
         <div id="players" v-for="player in this.players" :key="player.id">
           <Player :player=player />
         </div>
       </div>
-      <button :disabled="!isCurrent || turnEnd" @click="roll">Roll</button>
+      <button :disabled="!isCurrent || turnEnd" @click="performMove({'action': 'roll'})">Roll</button>
     </div>
   </div>
   <div class="result" v-if="this.gameState == 'result'">
@@ -53,10 +40,8 @@
 </template>
 
 <script>
-import Player from "./components/Player.vue";
-import Space from "./components/board/Space.vue";
-import Pyramid from "./components/board/Pyramid.vue";
-import LegBettingTile from "./components/board/LegBettingTile";
+import Player from "./components/Player";
+import Board from "./components/board/Board";
 import { mapState } from 'vuex';
 
 export default {
@@ -110,9 +95,6 @@ export default {
     new_game: function() {
       this.$store.dispatch("sendCommand", {"command": "new_game"});
     },
-    roll: function() {
-      this.$store.dispatch("sendAction", [0, 0, 1, ""]);
-    },
     performMove: function(params) {
       if (! this.isCurrent ) {
         console.log("Wait until your turn");
@@ -125,10 +107,8 @@ export default {
     },
   },
   components: {
+    Board,
     Player,
-    Space,
-    Pyramid,
-    LegBettingTile,
   },
 }
 </script>
@@ -148,24 +128,5 @@ export default {
 .grade-board {
   display: flex;
   flex-direction: column;
-}
-.game-board {
-  padding-top: 30px;
-  padding-left: 30px;
-  width: 650px;
-  height: 650px;
-  position: relative;
-}
-.pyramid {
-  border: 1px solid black;
-  height: 360px;
-  width: 360px;
-  background-color: #8b7355;
-  position: absolute;
-  top: 120px;
-  left: 120px;
-}
-.leg-betting-tiles {
-  display: flex;
 }
 </style>

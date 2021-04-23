@@ -14,8 +14,11 @@ export default {
 <style scoped>
 .leg-betting-tile {
     border: 1px solid black;
-    height: 200px;
-    width: 150px;
+    height: 150px;
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .card {
     font-size: 80px;

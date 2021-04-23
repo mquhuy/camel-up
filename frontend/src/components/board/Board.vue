@@ -1,27 +1,43 @@
 <template>
   <div class="board">
-    <Space v-for="i in 16" :key="i" :info="spaces[i]"/>
-    <div class="pyramid"></div>
+    <div class="leg-betting-tiles">
+      <LegBettingTile v-for="tile in tiles"
+                      :key="tile.camel"
+                      :tile="tile"
+                      @click="performMove({'action': 'bet-leg', 'camel': tile})" />
+    </div>
+    <div class="spaces">
+      <Space v-for="space in spaces"
+             :key="space.id"
+             :space="space"
+             @click="performMove({'action': 'dessert', 'space': space})" />
+      <div class="pyramid">
+        <Pyramid :action="actions" />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import Space from "./Space.vue";
+import Pyramid from "./Pyramid.vue";
+import LegBettingTile from "./LegBettingTile";
 export default {
   name: "Board",
-  props: ["info"],
-  watch: {
-    info: function(){
-      this.$emit('update:info', this.info)
-    }
-  },
-  data() {
-    return {
-      spaces: this.info,
-    }
-  },
+  props: ["tiles", "spaces", "actions", "inActive"],
   components: {
-    Space
+    Space,
+    Pyramid,
+    LegBettingTile,
+  },
+  methods: {
+    performMove: function(params) {
+      if ( this.inActive ) {
+        console.log("Wait until your turn");
+        return;
+      }
+     this.$store.dispatch("performMove", params);
+    },
   },
 };
 </script>
@@ -34,6 +50,11 @@ export default {
   width: 650px;
   height: 650px;
   position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.spaces {
+  position: relative;
 }
 .pyramid {
   border: 1px solid black;
@@ -43,5 +64,11 @@ export default {
   position: absolute;
   top: 120px;
   left: 120px;
+}
+.leg-betting-tiles {
+  width: 600px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
 }
 </style>
