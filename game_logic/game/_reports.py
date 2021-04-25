@@ -13,7 +13,7 @@ def report(self):
         print(self.final_scores)
 
 def generate_players_info(self):
-    if self.players == {}:
+    if self.players == {} or self.playing_order is None:
         return {}
     return {"Players": [self.generate_personal_info(self.players[p])
                         for p in self.playing_order]}

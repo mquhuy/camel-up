@@ -31,6 +31,7 @@ def update_players_info(self, room=None):
 def update_personal_info(self, player=None, player_info=None):
     if player is not None:
         player_info = self.generate_personal_info(player)
+        player_info.update(player.generate_bet_deck())
     self.emit_info("personal", player_info, room=player_info["id"])
 
 def update_leg_betting_info(self, room=None):

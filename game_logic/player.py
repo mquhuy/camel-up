@@ -76,14 +76,14 @@ class Player:
         else:
             return False, "Cannot bet since all the bets were taken"
 
-    def set_desert(self, game, space, state):
-        if not game.can_put_desert(self, space):
-            return False, "Player {} cannot put desert on space {}.".format(self.name, space.id)
+    def set_desert(self, game, space_id, state):
+        if not game.can_put_desert(self, space_id):
+            return False, "Player {} cannot put desert on space {}.".format(self.name, space_id)
         if self.desert_space is not None:
-            self.desert_space.remove_desert()
-        self.desert_space = space
-        space.set_desert(self, state)
-        return True, "Player {} puts desert on space {} with state {}.".format(self.name, space.id, state)
+            game.spaces[self.desert_space].remove_desert()
+        self.desert_space = space_id
+        game.spaces[space_id].set_desert(self, state)
+        return True, "Player {} puts desert on space {} with state {}.".format(self.name, space_id, state)
 
     def remove_desert(self):
         self.desert_space = None
@@ -92,19 +92,18 @@ class Player:
         choices = ["roll", "bet leg", "bet end win", "bet end lose", "set desert"]
         if not self.is_human:
             choice_idx = random.randrange(len(choices))
-            space_idx = random.randrange(1, 17)
+            space_id = random.randrange(1, 17)
             state = random.choice([-1, 1])
             camel_name = random.choice(CAMELS)
         else:
-            choice_idx, space_idx, state, camel_name = kargs
+            choice_idx, space_id, state, camel_name = kargs
         choice = choices[choice_idx]
-        space = game.spaces.get(space_idx, None)
-        actions = (choice, space, state, camel_name)
+        actions = (choice, space_id, state, camel_name)
         return self.perform_turn_actions(game, actions)
 
     def perform_turn_actions(self, game, actions):
         turn_success = False
-        action_choice, space, state, camel_name = actions
+        action_choice, space_id, state, camel_name = actions
         steps = None
         log = ""
         if action_choice == "roll":
@@ -116,10 +115,13 @@ class Player:
         elif action_choice == "bet end lose":
             turn_success, log = self.bet_game_losing_camel(camel_name, game)
         elif action_choice == "set desert":
-            turn_success, log = self.set_desert(game, space, state)
+            turn_success, log = self.set_desert(game, space_id, state)
         return turn_success, {'action': action_choice,
-                              'spaceIdx': space.id,
+                              'spaceIdx': space_id,
                               'state': state,
                               'camel': camel_name,
                               'roll_num': steps,
                               'log': log}
+
+    def generate_bet_deck(self):
+        return {"bet_deck": [camel for camel, used in self.final_bets.items() if not used]}

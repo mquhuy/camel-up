@@ -16,6 +16,7 @@ const state = {
   results: {},
   bettingTiles: [],
   turnEnd: false,
+  betDeck: [],
 };
 
 const mutations = {
@@ -40,6 +41,9 @@ const mutations = {
     state.name = payload.name;
     state.id = payload.id;
     state.bettingTiles = payload.leg_betting_tiles;
+  },
+  UPDATE_PERSONAL_INFO(state, payload) {
+    state.betDeck = payload.bet_deck
   },
   UPDATE_TILES(state, payload) {
     state.bettingTiles = payload.leg_betting_tiles;
@@ -98,6 +102,10 @@ const actions = {
       case "players":
         context.commit("UPDATE_PLAYERS", payload);
         break;
+      case "personal":
+        console.log(payload);
+        context.commit("UPDATE_PERSONAL_INFO", payload);
+        break;
       case "registration-result":
         context.commit("UPDATE_PLAYER_INFO", payload);
         context.commit("UPDATE_GAME_STATE", payload);
@@ -132,6 +140,9 @@ const actions = {
         break;
       case "roll":
         dispatch("sendAction", [0, 1, 1, ""]);
+        break;
+      case "bet-winner":
+        dispatch("sendAction", [2, 1, 1, params.camel]);
         break;
     }
   },

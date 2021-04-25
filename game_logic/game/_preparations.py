@@ -51,20 +51,23 @@ def init_bots(self, n_bots):
 def roll_init_dice(self):
     return {camel: random.randrange(3) + 1 for camel in self.camels.keys()}
 
-def reset(self):
+def reset(self, keep_players=True):
     # Reset the game state to prepare for a new game with same players
-    for player in self.players.values():
-        player.reset()
+    if keep_players:
+        for player in self.players.values():
+            player.reset()
+        self.game_state = "initialization"
+    else:
+        self.players = {}
+        self.game_state = "registration"
     for camel in self.camels.values():
         camel.reset()
     for space in self.spaces.values():
         space.reset()
-    self.betting_tiles = {camel.name: [prize for prize in LEG_BET_PRIZES]
-                          for camel in self.camels}
-    self.final_winning_deck = {camel.name: [] for camel in self.camels}
-    self.final_losing_deck = {camel.name: [] for camel in self.camels}
-    self.game_state = "registration"
-    self.init_playing_order()
+    self.final_winning_deck = {camel_name: [] for camel_name in self.camels}
+    self.final_losing_deck = {camel_name: [] for camel_name in self.camels}
     self.winning_camel = None
     self.losing_camel = None
+    self.playing_order = None
+    self.reset_dices()
 

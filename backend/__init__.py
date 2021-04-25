@@ -15,7 +15,6 @@ def create_app():
     app.config.from_mapping(
             SECRET_KEY='dev',
     )
-
     io = SocketIO(app, path='/backend/socket.io')
     g = game.Game()
     g.set_game_id()
@@ -44,9 +43,12 @@ def create_app():
     def start_game(_param):
         g.emit_info("game-start", {})
         g.init_playing_order()
-        g.update_all_game_info()
-        time.sleep(5)
         g.start_game()
+        g.update_all_game_info()
+        for player in g.players.values():
+            if player.is_human:
+                g.update_personal_info(player=player)
+        time.sleep(5)
         g.init_leg()
         utils.run_a_game(g)
 
@@ -54,13 +56,11 @@ def create_app():
     def reset_game(param):
         print(param)
         g.reset()
-        g.game_state = "replay"
         g.update_all_game_info()
 
     @io.on('new_game', namespace='/message')
     def new_game(param):
-        g.reset()
-        g.players = []
+        g.reset(False)
         g.update_all_game_info()
 
 
@@ -79,6 +79,7 @@ def create_app():
             g.emit_info("action-error", {"error": actions["log"]})
             return
         utils.handle_actions(g, actions)
+        g.update_personal_info(player=g.players[package["id"]])
         g.emit_info("action-success", {})
         utils.run_a_game(g)
 
@@ -95,6 +96,7 @@ def create_app():
                      "id": player.p_id,
                      "name": player.name}, room=room)
         g.update_all_game_info(room)
+        g.update_personal_info(player=player)
 
 
     @io.on('connect', namespace='/message')

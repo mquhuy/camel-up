@@ -10,14 +10,15 @@
     </div>
   </div>
   <div v-if="this.gameState == 'initialization'" class="buttons">
-    <button @click="start">Start Game</button>
+    <button @click="start">Ready</button>
   </div>
   <div v-if="this.gameState == 'play'">
     <div class="container">
       <Board :tiles="this.bettingTiles"
              :spaces="this.spaces"
              :actions="this.actions"
-             :inActive="!this.isCurrent || this.turnEnd" />
+             :inActive="!this.isCurrent || this.turnEnd"
+             :betDeck="this.betDeck" />
       <div class="grade-board">
         <div id="players" v-for="player in this.players" :key="player.id">
           <Player :player=player />
@@ -67,6 +68,7 @@ export default {
       "bettingTiles",
       "results",
       "turnEnd",
+      "betDeck",
     ]),
   },
   data() {

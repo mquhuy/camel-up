@@ -22,7 +22,7 @@ class Game:
         self.final_losing_deck = {camel_name: [] for camel_name in self.camels}
         self.init_bots(n_bots)
         self.game_state = "registration"
-        self.playing_order = list(self.players.keys())
+        self.playing_order = None
         self.current_player = None
         self.reset_dices()
         self.id = None

@@ -62,10 +62,11 @@ def run_leg(self):
     self.leg_scoring_round()
     self.report()
 
-def can_put_desert(self, player, space):
+def can_put_desert(self, player, space_id):
     """
     Determine if a player can put a desert
     """
+    space = self.spaces[space_id]
     if space.id == 1:
         return False
     if space.desert_player is not None:
