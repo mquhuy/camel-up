@@ -18,79 +18,83 @@ def create_app():
 
     io = SocketIO(app, path='/backend/socket.io')
     g = game.Game()
+    g.set_game_id()
+    g.set_io_instance(io)
 
     @io.on('register', namespace='/message')
     def register_player(data):
         name = data["name"]
-        n_players = data["nP"]
-        g.initialize_players(int(n_players))
+        n_bots = data["nP"]
+        g.init_bots(int(n_bots))
         print("Received name: " + name)
         if name != "":
             success, new_id = g.register(name)
         else:
-            success, new_id = True, -100
+            success, new_id = True, "-100"
         join_room(new_id)
-        utils.emit_info(io, "registration-result",
-                        {"registered": str(success),
-                         "id": new_id,
-                         "name": name}, room=new_id)
+        g.game_state = "initialization"
+        g.emit_info("registration-result",
+                    {"registered": str(success),
+                     "game_state": g.game_state,
+                     "id": new_id,
+                     "name": name}, room=new_id)
+        g.update_all_game_info()
 
     @io.on('start', namespace='/message')
     def start_game(_param):
-        utils.emit_info(io, "game-start", {})
-        g.game_state = "play"
-        utils.update_all_game_info(io, g)
+        g.emit_info("game-start", {})
+        g.init_playing_order()
+        g.update_all_game_info()
         time.sleep(5)
         g.start_game()
         g.init_leg()
-        utils.run_a_game(io, g)
+        utils.run_a_game(g)
 
     @io.on('reset', namespace='/message')
     def reset_game(param):
         print(param)
         g.reset()
         g.game_state = "replay"
-        utils.update_all_game_info(io, g)
+        g.update_all_game_info()
 
     @io.on('new_game', namespace='/message')
     def new_game(param):
         g.reset()
         g.players = []
-        utils.update_all_game_info(io, g)
+        g.update_all_game_info()
 
 
     @io.on('next_player', namespace='/message')
     def next_player():
         g.next_player()
-        current_player = g.current_player().name
+        current_player = g.current_player.name
         print(current_player)
-        io.emit('info', {'type': 'current_player',
-                         'info': current_player}, namespace='/message')
+        g.io.emit('info', {'type': 'current_player',
+                           'info': current_player}, namespace='/message')
 
     @io.on('action_choice', namespace='/message')
     def execute_action(package):
-        turn_success, actions = g.current_player().take_turn(g, package["actions"])
+        turn_success, actions = g.current_player.take_turn(g, package["actions"])
         if not turn_success:
-            utils.emit_info(io, "action-error", {"error": actions["log"]})
+            g.emit_info("action-error", {"error": actions["log"]})
             return
-        utils.handle_actions(io, g, actions)
-        utils.emit_info(io, "action-success", {})
-        utils.run_a_game(io, g)
+        utils.handle_actions(g, actions)
+        g.emit_info("action-success", {})
+        utils.run_a_game(g)
 
 
     @io.on('reConnect', namespace='/message')
     def reconnect_player(connect_player):
-        print(connect_player)
-        player = g.find_player_with_id(connect_player['id'])
-        room = connect_player['id']
-        join_room(room)
+        player = g.players.get(connect_player["id"], None)
         if player is None:
-            return utils.update_all_game_info(io, g)
-        utils.emit_info(io, "registration-result",
-                        {"registered": True,
-                         "id": player.id,
-                         "name": player.p_name}, room=room)
-        utils.update_all_game_info(io, g, room)
+            return g.update_all_game_info()
+        room = player.p_id
+        join_room(room)
+        g.emit_info("registration-result",
+                    {"registered": True,
+                     "id": player.p_id,
+                     "name": player.name}, room=room)
+        g.update_all_game_info(room)
 
 
     @io.on('connect', namespace='/message')

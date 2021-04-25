@@ -100,6 +100,7 @@ const actions = {
         break;
       case "registration-result":
         context.commit("UPDATE_PLAYER_INFO", payload);
+        context.commit("UPDATE_GAME_STATE", payload);
         break;
       default:
         console.log(type);
@@ -126,11 +127,11 @@ const actions = {
       case "bet-leg":
         dispatch("legBet", params.camel);
         break;
-      case "dessert":
-        dispatch("sendAction", [4, params.space.id - 1, -1, "blue"]);
+      case "desert":
+        dispatch("sendAction", [4, params.space.id, -1, ""]);
         break;
       case "roll":
-        dispatch("sendAction", [0, 0, 1, ""]);
+        dispatch("sendAction", [0, 1, 1, ""]);
         break;
     }
   },

@@ -8,9 +8,8 @@
       <input v-model.number="nP" type="number" placeholder="Number of bot players">
       <button @click="register(pName, nP)">Register</button>
     </div>
-    <button @click="start">Start Game</button>
   </div>
-  <div v-if="this.gameState == 'replay'" class="buttons">
+  <div v-if="this.gameState == 'initialization'" class="buttons">
     <button @click="start">Start Game</button>
   </div>
   <div v-if="this.gameState == 'play'">
@@ -52,6 +51,9 @@ export default {
         return false;
       }
       const localPlayer = this.players.find(player => player.id == this.id);
+      if (! localPlayer ) {
+          return false;
+      }
       return localPlayer.current;
     },
     ...mapState([
@@ -75,10 +77,8 @@ export default {
     }
   },
   mounted() {
-    if (this.id > 0) {
-      this.$store.dispatch("sendCommand", {command: "reConnect",
-                                           id: this.id});
-    };
+    this.$store.dispatch("sendCommand", {command: "reConnect",
+                                         id: this.id, name: this.name});
   },
   methods: {
     start: function() {

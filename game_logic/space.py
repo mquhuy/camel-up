@@ -13,26 +13,20 @@ class Space:
 
     def remove_camel(self, camel):
         if camel in self.camels:
-            self.camels.remove(camel)
+            camel_idx = self.camels.index(camel)
+            self.camels = self.camels[:camel_idx]
 
     def get_stacks(self, camel):
         if camel not in self.camels:
             return []
         return self.camels[self.camels.index(camel):]
 
-    def add_camels(self, camel):
-        if camel.position is None:
-            stacks = [camel]
-        else:
-            stacks = camel.position.get_stacks(camel)
-        for camel in stacks:
-            camel.set_position(self)
+    def append_camel(self, camel):
+        if not camel in self.camels:
+            self.camels.append(camel)
 
     def print_camels(self):
-        return_str = ""
-        for camel in self.camels:
-            return_str += camel.name + " "
-        return return_str
+        return " ".join(self.camels)
 
     def set_desert(self, player, state):
         self.desert_player = player
@@ -50,20 +44,14 @@ class Space:
 
 class Camel:
     def __init__(self, name):
-        self.position = None
+        self.position_id = 0
         self.name = name
 
     def pos_id(self):
-        if self.position is None:
-            return -1
-        return self.position.id
+        return self.position_id
 
-    def set_position(self, space):
-        if self.position is not None:
-            self.position.remove_camel(self)
-        self.position = space
-        if not self in space.camels:
-            space.camels.append(self)
+    def set_position(self, space_id):
+        self.position_id = space_id
 
     def reset(self):
-        self.position = None
+        self.position_id = 0

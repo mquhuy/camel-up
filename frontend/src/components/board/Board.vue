@@ -10,7 +10,7 @@
       <Space v-for="space in spaces"
              :key="space.id"
              :space="space"
-             @click="performMove({'action': 'dessert', 'space': space})" />
+             @click="performMove({'action': 'desert', 'space': space})" />
       <div class="pyramid">
         <Pyramid :action="actions" />
       </div>
