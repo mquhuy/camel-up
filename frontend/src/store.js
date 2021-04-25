@@ -43,7 +43,7 @@ const mutations = {
     state.bettingTiles = payload.leg_betting_tiles;
   },
   UPDATE_PERSONAL_INFO(state, payload) {
-    state.betDeck = payload.bet_deck
+    state.betDeck = payload.bet_deck;
   },
   UPDATE_TILES(state, payload) {
     state.bettingTiles = payload.leg_betting_tiles;
@@ -131,7 +131,7 @@ const actions = {
 
   performMove({ dispatch }, params) {
     const action = params.action;
-    switch (action){
+    switch (action) {
       case "bet-leg":
         dispatch("legBet", params.camel);
         break;
@@ -148,25 +148,24 @@ const actions = {
   },
 
   legBet({ state, dispatch }, camel) {
-    if (! state.bettingTiles ) {
+    if (!state.bettingTiles) {
       return;
-    };
+    }
     if (camel.bet == 0) {
       console.log("All cards in this tile were taken.");
       return;
-    };
+    }
     dispatch("sendAction", [1, 0, 0, camel.camel]);
   },
 
-  sendAction( { dispatch, commit }, actions) {
+  sendAction({ dispatch, commit }, actions) {
     commit("UPDATE_TURN_STATUS", true);
-    dispatch("sendCommand", {"command": "action_choice",
-                             "actions": actions});
+    dispatch("sendCommand", { command: "action_choice", actions: actions });
   },
 };
 
 const getters = {
-  isConnected: state => state.isConnected,
+  isConnected: (state) => state.isConnected,
 };
 
 const store = createStore({

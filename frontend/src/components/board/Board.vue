@@ -1,30 +1,34 @@
 <template>
   <div class="board">
     <div class="leg-betting-tiles">
-      <LegBettingTile v-for="tile in tiles"
-                      :key="tile.camel"
-                      :tile="tile"
-                      @click="performMove({'action': 'bet-leg', 'camel': tile})" />
+      <LegBettingTile
+        v-for="tile in tiles"
+        :key="tile.camel"
+        :tile="tile"
+        @click="performMove({ action: 'bet-leg', camel: tile })"
+      />
     </div>
     <div class="spaces">
-      <Space v-for="space in spaces"
-             :key="space.id"
-             :space="space"
-             @click="performMove({'action': 'desert', 'space': space})" />
+      <Space
+        v-for="space in spaces"
+        :key="space.id"
+        :space="space"
+        @click="performMove({ action: 'desert', space: space })"
+      />
       <div class="pyramid">
         <Pyramid :action="actions" />
       </div>
       <div class="hidden"></div>
     </div>
-    <p> Available betting cards </p>
+    <p>Available betting cards</p>
     <div class="bet-deck">
-      <div v-for="card in betDeck"
-           class="deck-card"
-           :key="card"
-           :class="card"
-           @click="performMove({'action': 'bet-winner', 'camel': card})"
-           >
-      </div>
+      <div
+        v-for="card in betDeck"
+        class="deck-card"
+        :key="card"
+        :class="card"
+        @click="performMove({ action: 'bet-winner', camel: card })"
+      ></div>
     </div>
   </div>
 </template>
@@ -42,12 +46,12 @@ export default {
     LegBettingTile,
   },
   methods: {
-    performMove: function(params) {
-      if ( this.inActive ) {
+    performMove: function (params) {
+      if (this.inActive) {
         console.log("Wait until your turn");
         return;
       }
-     this.$store.dispatch("performMove", params);
+      this.$store.dispatch("performMove", params);
     },
   },
 };
@@ -100,18 +104,18 @@ export default {
   align-items: center;
 }
 .green {
-    background-color: green;
+  background-color: green;
 }
 .blue {
-    background-color: blue;
+  background-color: blue;
 }
 .yellow {
-    background-color: yellow;
+  background-color: yellow;
 }
 .white {
-    background-color: white;
+  background-color: white;
 }
 .orange {
-    background-color: orange;
+  background-color: orange;
 }
 </style>
