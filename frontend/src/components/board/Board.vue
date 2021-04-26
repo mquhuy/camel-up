@@ -9,11 +9,7 @@
       />
     </div>
     <div class="spaces">
-      <Space
-        v-for="space in spaces"
-        :key="space.id"
-        :space="space"
-      />
+      <Space v-for="space in spaces" :key="space.id" :space="space" />
       <div class="pyramid">
         <Pyramid />
       </div>

@@ -173,7 +173,7 @@ const actions = {
 
 const getters = {
   isConnected: (state) => state.isConnected,
-  isCurrent (state) {
+  isCurrent(state) {
     if (!state.gameState == "play" || state.id == -100) {
       return false;
     }
@@ -183,7 +183,7 @@ const getters = {
     }
     return localPlayer.current;
   },
-  actionable (state, getters) {
+  actionable(state, getters) {
     return getters.isCurrent && !state.turnEnd;
   },
 };

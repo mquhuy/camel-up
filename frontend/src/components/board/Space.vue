@@ -2,21 +2,29 @@
   <div
     :class="idClass"
     class="space"
-    @mouseover="active=true"
-    @mouseleave="active=false"
+    @mouseover="active = true"
+    @mouseleave="active = false"
   >
     <div v-if="space.camels.length" class="camels">
-      <div v-for="camel in space.camels " :key="camel" class="camel" :class="camel"></div>
+      <div
+        v-for="camel in space.camels"
+        :key="camel"
+        class="camel"
+        :class="camel"
+      />
     </div>
     <div v-if="space.desert != 0">
       <div class="desert">{{ space.desert }}</div>
       <div class="desert-owner">{{ space.desertP }}</div>
     </div>
-    <div class="betting-choices" v-if="space.desertable && active && actionable">
+    <div
+      class="betting-choices"
+      v-if="space.desertable && active && actionable"
+    >
       <button
         class="winner"
         @click="
-          performMove({ action: 'desert', space_id: space.id, state:+1 })
+          performMove({ action: 'desert', space_id: space.id, state: +1 })
         "
       >
         +1
@@ -24,7 +32,7 @@
       <button
         class="loser"
         @click="
-          performMove({ action: 'desert', space_id: space.id, state:-1 })
+          performMove({ action: 'desert', space_id: space.id, state: -1 })
         "
       >
         -1
@@ -37,13 +45,13 @@
 import { mapActions, mapGetters } from "vuex";
 export default {
   name: "Space",
-  props: [ "space"],
+  props: ["space"],
   computed: mapGetters(["actionable"]),
-  data: function() {
+  data: function () {
     return {
       idClass: "id" + this.space.id,
       active: false,
-    }
+    };
   },
   methods: mapActions(["performMove"]),
 };
@@ -129,7 +137,7 @@ export default {
   background-color: grey;
   font-size: 5em;
 }
-.desert-owner  {
+.desert-owner {
   width: 100%;
   height: 100%;
   background-color: red;

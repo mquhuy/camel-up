@@ -1,28 +1,22 @@
 <template>
-    <div v-if="actions && (!actionable)" class="action">
-      <div v-if="actions.type != 'result'" class="info">
+  <div v-if="actions && !actionable" class="action">
+    <div v-if="actions.type != 'result'" class="info">
       {{ actions.player }} performs action {{ actions.action }}
-      </div>
-      <div v-if="actions.action == 'roll'" class="roll" :class="actions.camel">
-        <div class="die">{{ actions.roll_num }} </div>
-      </div>
-      <div v-if="actions.type == 'result'" class="result">
-        <div class="result-item">
-          Camel {{ actions.winning_camel }} achieves the first place.
-        </div>
-        <div class="result-item">
-          Player {{ actions.winning_player }} won.
-        </div>
-      </div>
     </div>
-    <div class="roll-button" v-if="actionable">
-      <p>Your turn </p>
-      <button
-        @click="performMove({ action: 'roll' })"
-      >
-        Roll
-      </button>
+    <div v-if="actions.action == 'roll'" class="roll" :class="actions.camel">
+      <div class="die">{{ actions.roll_num }}</div>
     </div>
+    <div v-if="actions.type == 'result'" class="result">
+      <div class="result-item">
+        Camel {{ actions.winning_camel }} achieves the first place.
+      </div>
+      <div class="result-item">Player {{ actions.winning_player }} won.</div>
+    </div>
+  </div>
+  <div class="roll-button" v-if="actionable">
+    <p>Your turn</p>
+    <button @click="performMove({ action: 'roll' })">Roll</button>
+  </div>
 </template>
 
 <script>
@@ -67,7 +61,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center
+  align-items: center;
 }
 .roll-button p {
   font-size: 4em;
