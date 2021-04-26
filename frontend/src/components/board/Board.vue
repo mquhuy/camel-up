@@ -20,16 +20,7 @@
       </div>
       <div class="hidden"></div>
     </div>
-    <p>Available betting cards</p>
-    <div class="bet-deck">
-      <div
-        v-for="card in betDeck"
-        class="deck-card"
-        :key="card"
-        :class="card"
-        @click="performMove({ action: 'bet-winner', camel: card })"
-      ></div>
-    </div>
+    <FinalBettingDeck />
   </div>
 </template>
 
@@ -37,23 +28,19 @@
 import Space from "./Space.vue";
 import Pyramid from "./Pyramid.vue";
 import LegBettingTile from "./LegBettingTile";
+import FinalBettingDeck from "./FinalBettingDeck";
+import { mapState, mapActions } from "vuex";
 export default {
   name: "Board",
-  props: ["tiles", "spaces", "actions", "inActive", "betDeck"],
+  props: ["tiles", "actions", "inActive", "betDeck"],
+  computed: mapState(["currentBetCamel", "spaces"]),
   components: {
     Space,
     Pyramid,
     LegBettingTile,
+    FinalBettingDeck,
   },
-  methods: {
-    performMove: function (params) {
-      if (this.inActive) {
-        console.log("Wait until your turn");
-        return;
-      }
-      this.$store.dispatch("performMove", params);
-    },
-  },
+  methods: mapActions(["performMove", "changeCurrentBetCamel"]),
 };
 </script>
 
@@ -90,32 +77,5 @@ export default {
   display: flex;
   justify-content: space-between;
   margin-bottom: 10px;
-}
-.bet-deck {
-  display: flex;
-}
-.deck-card {
-  margin: 10px;
-  border: 1px solid black;
-  height: 150px;
-  width: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.green {
-  background-color: green;
-}
-.blue {
-  background-color: blue;
-}
-.yellow {
-  background-color: yellow;
-}
-.white {
-  background-color: white;
-}
-.orange {
-  background-color: orange;
 }
 </style>

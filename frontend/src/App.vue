@@ -20,7 +20,6 @@
     <div class="container">
       <Board
         :tiles="this.bettingTiles"
-        :spaces="this.spaces"
         :actions="this.actions"
         :inActive="!this.isCurrent || this.turnEnd"
         :betDeck="this.betDeck"
@@ -53,7 +52,7 @@
 <script>
 import Player from "./components/Player";
 import Board from "./components/board/Board";
-import { mapState } from "vuex";
+import { mapState, mapActions } from "vuex";
 
 export default {
   name: "App",
@@ -72,7 +71,6 @@ export default {
       "name",
       "id",
       "registered",
-      "spaces",
       "players",
       "gameState",
       "actions",
@@ -113,16 +111,7 @@ export default {
     new_game: function () {
       this.$store.dispatch("sendCommand", { command: "new_game" });
     },
-    performMove: function (params) {
-      if (!this.isCurrent) {
-        console.log("Wait until your turn");
-        return;
-      }
-      if (this.turnEnd) {
-        return;
-      }
-      this.$store.dispatch("performMove", params);
-    },
+    ...mapActions["performMove"],
   },
   components: {
     Board,

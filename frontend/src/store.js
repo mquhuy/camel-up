@@ -17,6 +17,7 @@ const state = {
   bettingTiles: [],
   turnEnd: false,
   betDeck: [],
+  currentBetCamel: null,
 };
 
 const mutations = {
@@ -58,6 +59,9 @@ const mutations = {
   },
   UPDATE_TURN_STATUS(state, payload) {
     state.turnEnd = payload;
+  },
+  UPDATE_CURRENT_BET_CAMEL(state, payload) {
+    state.currentBetCamel = payload;
   },
 };
 
@@ -129,7 +133,14 @@ const actions = {
     socket.emit(command, details);
   },
 
-  performMove({ dispatch }, params) {
+  performMove({ state, dispatch }, params) {
+    if (!state.isCurrent) {
+      console.log("Wait until your turn");
+      return;
+    }
+    if (state.turnEnd) {
+      return;
+    }
     const action = params.action;
     switch (action) {
       case "bet-leg":
@@ -161,6 +172,10 @@ const actions = {
   sendAction({ dispatch, commit }, actions) {
     commit("UPDATE_TURN_STATUS", true);
     dispatch("sendCommand", { command: "action_choice", actions: actions });
+  },
+
+  changeCurrentBetCamel({ commit }, camel) {
+    commit("UPDATE_CURRENT_BET_CAMEL", camel);
   },
 };
 
