@@ -44,6 +44,8 @@ def create_app():
 
     @io.on('start', namespace='/message')
     def check_ready(param):
+        if g.expected_n_players == 0:
+            return start_game()
         g.players[param["id"]].mark_ready()
         if g.check_enough_players():
             start_game()
