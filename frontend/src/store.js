@@ -17,7 +17,6 @@ const state = {
   bettingTiles: [],
   turnEnd: false,
   betDeck: [],
-  currentBetCamel: null,
 };
 
 const mutations = {
@@ -59,9 +58,6 @@ const mutations = {
   },
   UPDATE_TURN_STATUS(state, payload) {
     state.turnEnd = payload;
-  },
-  UPDATE_CURRENT_BET_CAMEL(state, payload) {
-    state.currentBetCamel = payload;
   },
 };
 
@@ -134,7 +130,7 @@ const actions = {
   },
 
   performMove({ state, dispatch }, params) {
-    if (!state.isCurrent) {
+    if (!getters.isCurrent) {
       console.log("Wait until your turn");
       return;
     }
@@ -147,7 +143,7 @@ const actions = {
         dispatch("legBet", params.camel);
         break;
       case "desert":
-        dispatch("sendAction", [4, params.space.id, -1, ""]);
+        dispatch("sendAction", [4, params.space_id, params.state, ""]);
         break;
       case "roll":
         dispatch("sendAction", [0, 1, 1, ""]);
@@ -173,14 +169,23 @@ const actions = {
     commit("UPDATE_TURN_STATUS", true);
     dispatch("sendCommand", { command: "action_choice", actions: actions });
   },
-
-  changeCurrentBetCamel({ commit }, camel) {
-    commit("UPDATE_CURRENT_BET_CAMEL", camel);
-  },
 };
 
 const getters = {
   isConnected: (state) => state.isConnected,
+  isCurrent (state) {
+    if (!state.gameState == "play" || state.id == -100) {
+      return false;
+    }
+    const localPlayer = state.players.find((player) => player.id == state.id);
+    if (!localPlayer) {
+      return false;
+    }
+    return localPlayer.current;
+  },
+  actionable (state, getters) {
+    return getters.isCurrent && !state.turnEnd;
+  },
 };
 
 const store = createStore({

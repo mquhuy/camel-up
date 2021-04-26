@@ -2,7 +2,7 @@
   <div class="board">
     <div class="leg-betting-tiles">
       <LegBettingTile
-        v-for="tile in tiles"
+        v-for="tile in bettingTiles"
         :key="tile.camel"
         :tile="tile"
         @click="performMove({ action: 'bet-leg', camel: tile })"
@@ -13,10 +13,9 @@
         v-for="space in spaces"
         :key="space.id"
         :space="space"
-        @click="performMove({ action: 'desert', space: space })"
       />
       <div class="pyramid">
-        <Pyramid :action="actions" />
+        <Pyramid />
       </div>
       <div class="hidden"></div>
     </div>
@@ -32,8 +31,7 @@ import FinalBettingDeck from "./FinalBettingDeck";
 import { mapState, mapActions } from "vuex";
 export default {
   name: "Board",
-  props: ["tiles", "actions", "inActive", "betDeck"],
-  computed: mapState(["currentBetCamel", "spaces"]),
+  computed: mapState(["spaces", "bettingTiles"]),
   components: {
     Space,
     Pyramid,

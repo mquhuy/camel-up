@@ -18,23 +18,12 @@
   </div>
   <div v-if="this.gameState == 'play'">
     <div class="container">
-      <Board
-        :tiles="this.bettingTiles"
-        :actions="this.actions"
-        :inActive="!this.isCurrent || this.turnEnd"
-        :betDeck="this.betDeck"
-      />
+      <Board />
       <div class="grade-board">
         <div id="players" v-for="player in this.players" :key="player.id">
           <Player :player="player" />
         </div>
       </div>
-      <button
-        :disabled="!isCurrent || turnEnd"
-        @click="performMove({ action: 'roll' })"
-      >
-        Roll
-      </button>
     </div>
   </div>
   <div class="result" v-if="this.gameState == 'result'">
@@ -57,16 +46,6 @@ import { mapState, mapActions } from "vuex";
 export default {
   name: "App",
   computed: {
-    isCurrent() {
-      if (!this.gameState == "play" || this.id < 0) {
-        return false;
-      }
-      const localPlayer = this.players.find((player) => player.id == this.id);
-      if (!localPlayer) {
-        return false;
-      }
-      return localPlayer.current;
-    },
     ...mapState([
       "name",
       "id",
@@ -111,7 +90,7 @@ export default {
     new_game: function () {
       this.$store.dispatch("sendCommand", { command: "new_game" });
     },
-    ...mapActions["performMove"],
+    ...mapActions(["performMove"]),
   },
   components: {
     Board,

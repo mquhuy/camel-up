@@ -1,26 +1,39 @@
 <template>
-    <div v-if="action">
-      <div v-if="action.type != 'result'" class="info">
-      {{ action.player }} performs action {{ action.action }}
+    <div v-if="actions && (!actionable)" class="action">
+      <div v-if="actions.type != 'result'" class="info">
+      {{ actions.player }} performs action {{ actions.action }}
       </div>
-      <div v-if="action.action == 'roll'" class="roll" :class="action.camel">
-        <div class="die">{{ action.roll_num }} </div>
+      <div v-if="actions.action == 'roll'" class="roll" :class="actions.camel">
+        <div class="die">{{ actions.roll_num }} </div>
       </div>
-      <div v-if="action.type == 'result'" class="result">
+      <div v-if="actions.type == 'result'" class="result">
         <div class="result-item">
-          Camel {{ action.winning_camel }} achieves the first place.
+          Camel {{ actions.winning_camel }} achieves the first place.
         </div>
         <div class="result-item">
-          Player {{ action.winning_player }} won.
+          Player {{ actions.winning_player }} won.
         </div>
       </div>
+    </div>
+    <div class="roll-button" v-if="actionable">
+      <p>Your turn </p>
+      <button
+        @click="performMove({ action: 'roll' })"
+      >
+        Roll
+      </button>
     </div>
 </template>
 
 <script>
+import { mapState, mapGetters, mapActions } from "vuex";
 export default {
   name: "Pyramid",
-  props: ["action"],
+  computed: {
+    ...mapState(["actions"]),
+    ...mapGetters(["actionable"]),
+  },
+  methods: mapActions(["performMove"]),
 };
 </script>
 
@@ -42,6 +55,29 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+.action {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.roll-button {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center
+}
+.roll-button p {
+  font-size: 4em;
+  margin: 0;
+}
+.roll-button button {
+  width: 120px;
+  height: 60px;
+  font-size: 2em;
+  font-style: bold;
 }
 .die {
 }

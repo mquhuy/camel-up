@@ -1,17 +1,18 @@
 <template>
-  <p>Available betting cards</p>
+  <p>Your available betting cards</p>
   <div class="bet-deck">
     <div
       v-for="card in betDeck"
       class="deck-card"
       :key="card"
       :class="card"
-      @mouseover="changeCurrentBetCamel(card)"
-      @mouseleave="changeCurrentBetCamel(null)"
+      @mouseover="currentBetCamel = card"
+      @mouseleave="currentBetCamel = null"
     >
-      <div class="betting-choices" v-if="currentBetCamel == card">
+      <div class="betting-choices" v-if="currentBetCamel == card && actionable">
         <button
           class="winner"
+          @class="card"
           @click="
             performMove({ action: 'bet-winner', camel: currentBetCamel })
           "
@@ -20,6 +21,7 @@
         </button>
         <button
           class="loser"
+          @class="card"
           @click="
             performMove({ action: 'bet-loser', camel: currentBetCamel })
           "
@@ -32,11 +34,19 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState, mapActions, mapGetters } from "vuex";
 export default {
   name: "FinalBettingDeck",
-  computed: mapState(["currentBetCamel", "betDeck"]),
-  methods: mapActions(["performMove", "changeCurrentBetCamel"]),
+  computed: {
+    ...mapState(["betDeck"]),
+    ...mapGetters(["actionable"]),
+  },
+  data: function () {
+    return {
+      currentBetCamel: null,
+    }
+  },
+  methods: mapActions(["performMove"]),
 }
 </script>
 
@@ -56,7 +66,11 @@ export default {
 .betting-choices {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-around;
+  height: 100%;
+}
+.betting-choices button {
+  flex: 1;
 }
 .green {
   background-color: green;

@@ -25,7 +25,8 @@ def generate_board_info(self):
                           'desert': s.desert_state,
                           'desertP': s.desert_player.name
                                      if s.desert_player
-                                     is not None else None}
+                                     is not None else None,
+                          'desertable': self.can_put_desert(self.current_player, s_id)}
                    for s_id, s in self.spaces.items()},
         }
 

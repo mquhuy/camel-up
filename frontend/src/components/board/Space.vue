@@ -1,5 +1,10 @@
 <template>
-  <div :class="idClass" class="space">
+  <div
+    :class="idClass"
+    class="space"
+    @mouseover="active=true"
+    @mouseleave="active=false"
+  >
     <div v-if="space.camels.length" class="camels">
       <div v-for="camel in space.camels " :key="camel" class="camel" :class="camel"></div>
     </div>
@@ -7,18 +12,40 @@
       <div class="desert">{{ space.desert }}</div>
       <div class="desert-owner">{{ space.desertP }}</div>
     </div>
+    <div class="betting-choices" v-if="space.desertable && active && actionable">
+      <button
+        class="winner"
+        @click="
+          performMove({ action: 'desert', space_id: space.id, state:+1 })
+        "
+      >
+        +1
+      </button>
+      <button
+        class="loser"
+        @click="
+          performMove({ action: 'desert', space_id: space.id, state:-1 })
+        "
+      >
+        -1
+      </button>
+    </div>
   </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
 export default {
   name: "Space",
   props: [ "space"],
+  computed: mapGetters(["actionable"]),
   data: function() {
     return {
       idClass: "id" + this.space.id,
+      active: false,
     }
   },
+  methods: mapActions(["performMove"]),
 };
 </script>
 
@@ -133,5 +160,14 @@ export default {
 }
 .orange {
   background-color: orange;
+}
+.betting-choices {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.betting-choices button {
+  flex: 1;
 }
 </style>
