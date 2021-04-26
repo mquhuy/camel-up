@@ -37,7 +37,8 @@ const mutations = {
     state.actions = payload.action;
   },
   UPDATE_PLAYER_INFO(state, payload) {
-    state.registered = payload.registered;
+    console.log(payload.registered)
+    state.registered = (payload.registered == "True");
     state.name = payload.name;
     state.id = payload.id;
     state.bettingTiles = payload.leg_betting_tiles;
@@ -51,7 +52,6 @@ const mutations = {
   UPDATE_ALL(state, payload) {
     state.gameState = payload.game_state;
     state.spaces = payload.spaces;
-    state.registered = payload.registered;
     state.name = payload.name;
     state.bettingTiles = payload.leg_betting_tiles;
     state.players = payload.Players;
@@ -150,6 +150,9 @@ const actions = {
         break;
       case "bet-winner":
         dispatch("sendAction", [2, 1, 1, params.camel]);
+        break;
+      case "bet-loser":
+        dispatch("sendAction", [3, 1, 1, params.camel]);
         break;
     }
   },

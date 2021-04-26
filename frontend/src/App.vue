@@ -1,20 +1,31 @@
 <template>
   <div v-if="this.gameState == 'registration'" class="buttons">
     <div id="registration">
-      <div class="human-player">
-        <input type="checkbox" v-model="addHuman" /> Include Human Player
-        <input v-if="addHuman" v-model="pName" placeholder="Enter your name" />
-      </div>
+      <input v-model="pName" placeholder="Enter your name" />
+      <p>Number of players
       <input
-        v-model.number="nP"
+        v-model.number="nPlayers"
+        :min=0
         type="number"
-        placeholder="Number of bot players"
       />
-      <button @click="register(pName, nP)">Register</button>
+      </p>
+      <p>Number of bots
+      <input
+        v-model.number="nBots"
+        :min=0
+        type="number"
+      />
+      </p>
+      <button @click="register(pName, nPlayers, nBots)">Register</button>
     </div>
   </div>
   <div v-if="this.gameState == 'initialization'" class="buttons">
-    <button @click="start">Ready</button>
+    <div class="join" v-if="!registered">
+      <input v-model="pName" placeholder="Enter your name" />
+      <button @click="register(pName, nPlayers, nBots)">Join</button>
+    </div>
+    <button v-if="!this.ready && registered" @click="start">Ready</button>
+    <p v-if="this.ready">Waiting for other players</p>
   </div>
   <div v-if="this.gameState == 'play'">
     <div class="container">
@@ -61,9 +72,10 @@ export default {
   },
   data() {
     return {
-      nP: 0,
-      addHuman: false,
+      nBots: 0,
+      nPlayers: 0,
       pName: "",
+      ready: false,
     };
   },
   mounted() {
@@ -76,12 +88,14 @@ export default {
   methods: {
     start: function () {
       this.$store.dispatch("sendCommand", { command: "start" });
+      this.ready = true;
     },
-    register: function (pName, nP) {
+    register: function (pName, nPlayers, nBots) {
       this.$store.dispatch("sendCommand", {
         command: "register",
         name: pName,
-        nP: nP,
+        nPlayers: nPlayers,
+        nBots: nBots,
       });
     },
     reset: function () {

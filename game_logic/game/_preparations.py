@@ -36,6 +36,14 @@ def register(self, new_player_name, human=True):
     self.players[new_id] = Player(new_player_name, new_id, human)
     return (True, str(new_id))
 
+def set_expected_n_players(self, n_players):
+    self.expected_n_players = n_players
+
+def check_enough_players(self):
+    registered_players = [1 for player in self.players.values()
+                          if player.is_human and player.ready]
+    return sum(registered_players) == self.expected_n_players
+
 def init_bots(self, n_bots):
     if n_bots <= 0:
         return

@@ -27,12 +27,16 @@ class Game:
         self.reset_dices()
         self.id = None
         self.io = None
+        self.expected_n_players = 0
 
    # Leg
    from ._preparations import \
            generate_new_id, \
            init_playing_order, \
-           reset_dices, register, \
+           reset_dices, \
+           register, \
+           set_expected_n_players, \
+           check_enough_players, \
            init_bots, \
            roll_init_dice, \
            reset

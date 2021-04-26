@@ -23,8 +23,11 @@ def create_app():
     @io.on('register', namespace='/message')
     def register_player(data):
         name = data["name"]
-        n_bots = data["nP"]
-        g.init_bots(int(n_bots))
+        n_bots = data["nBots"]
+        n_players = data["nPlayers"]
+        if g.game_state == "registration":
+            g.init_bots(int(n_bots))
+            g.set_expected_n_players(n_players)
         print("Received name: " + name)
         if name != "":
             success, new_id = g.register(name)
@@ -40,7 +43,12 @@ def create_app():
         g.update_all_game_info()
 
     @io.on('start', namespace='/message')
-    def start_game(_param):
+    def check_ready(param):
+        g.players[param["id"]].mark_ready()
+        if g.check_enough_players():
+            start_game()
+
+    def start_game():
         g.emit_info("game-start", {})
         g.init_playing_order()
         g.start_game()
@@ -88,6 +96,13 @@ def create_app():
     def reconnect_player(connect_player):
         player = g.players.get(connect_player["id"], None)
         if player is None:
+            room = "tmp"
+            join_room(room)
+            g.emit_info("registration-result",
+                        {"registered": False,
+                         "id": "",
+                         "name": ""}, room=room)
+            leave_room(room)
             return g.update_all_game_info()
         room = player.p_id
         join_room(room)
