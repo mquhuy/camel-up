@@ -2,19 +2,13 @@
   <div v-if="this.gameState == 'registration'" class="buttons">
     <div id="registration">
       <input v-model="pName" placeholder="Enter your name" />
-      <p>Number of players
-      <input
-        v-model.number="nPlayers"
-        :min=0
-        type="number"
-      />
+      <p>
+        Number of players
+        <input v-model.number="nPlayers" :min="0" type="number" />
       </p>
-      <p>Number of bots
-      <input
-        v-model.number="nBots"
-        :min=0
-        type="number"
-      />
+      <p>
+        Number of bots
+        <input v-model.number="nBots" :min="0" type="number" />
       </p>
       <button @click="register(pName, nPlayers, nBots)">Register</button>
     </div>

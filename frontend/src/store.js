@@ -37,8 +37,7 @@ const mutations = {
     state.actions = payload.action;
   },
   UPDATE_PLAYER_INFO(state, payload) {
-    console.log(payload.registered)
-    state.registered = (payload.registered == "True");
+    state.registered = payload.registered == "True";
     state.name = payload.name;
     state.id = payload.id;
     state.bettingTiles = payload.leg_betting_tiles;
