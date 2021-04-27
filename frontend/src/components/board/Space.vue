@@ -6,7 +6,8 @@
     @mouseleave="active = false"
   >
     <div v-if="space.camels.length" class="camels">
-      <div
+      <img
+        src="../../../img/camel-icon.svg"
         v-for="camel in space.camels"
         :key="camel"
         class="camel"
@@ -149,26 +150,27 @@ export default {
   display: flex;
   flex-direction: column-reverse;
   justify-content: center;
+  margin-top: 10px;
 }
 .camel {
-  width: 30px;
-  height: 20px;
-  margin: 0 auto;
+  width: 40px;
+  height: auto;
+  margin: -5px auto;
 }
 .white {
-  background-color: white;
+  filter: invert(100%) sepia(0%) saturate(7485%) hue-rotate(159deg) brightness(105%) contrast(108%);
 }
 .yellow {
-  background-color: yellow;
+  filter: invert(100%) sepia(100%) saturate(1914%) hue-rotate(0deg) brightness(101%) contrast(104%);
 }
 .blue {
-  background-color: blue;
+  filter: invert(8%) sepia(100%) saturate(6389%) hue-rotate(246deg) brightness(103%) contrast(143%);
 }
 .green {
-  background-color: green;
+  filter: invert(28%) sepia(99%) saturate(1117%) hue-rotate(90deg) brightness(96%) contrast(106%);
 }
 .orange {
-  background-color: orange;
+  filter: invert(59%) sepia(70%) saturate(985%) hue-rotate(360deg) brightness(102%) contrast(105%);
 }
 .betting-choices {
   height: 100%;

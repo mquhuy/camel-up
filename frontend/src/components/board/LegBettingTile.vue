@@ -36,7 +36,6 @@ export default {
 .camel-image {
   width: 60px;
   height: 50px;
-  color: blue !important;
 }
 .green {
     background-color: green;
