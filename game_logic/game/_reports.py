@@ -19,7 +19,7 @@ def generate_players_info(self):
                         for p in self.playing_order]}
 
 def generate_board_info(self):
-    return {
+    info = {
         "spaces": {s_id: {'id': s_id,
                           'camels': s.camels,
                           'desert': s.desert_state,
@@ -29,6 +29,8 @@ def generate_board_info(self):
                           'desertable': self.can_put_desert(self.current_player, s_id)}
                    for s_id, s in self.spaces.items()},
         }
+    info["spaces"][1]["camels"] += self.final_space.camels
+    return info
 
 def generate_leg_betting_info(self):
     return {
@@ -64,3 +66,8 @@ def generate_all_game_info(self):
     info.update(self.generate_game_state_info())
     info.update(self.generate_game_result_info())
     return info
+
+def get_space(self, space_id):
+    if space_id <= len(self.spaces):
+        return self.spaces[space_id]
+    return self.final_space

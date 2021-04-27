@@ -25,5 +25,5 @@ def determine_game_result(self):
     self.final_scores = {player: self.scores[player] for player in orders}
 
 def declare_winning_camel(self):
-    self.winning_camel = self.spaces[1].get_top_camel()
+    self.winning_camel = self.final_space.get_top_camel()
     self.determine_game_result()

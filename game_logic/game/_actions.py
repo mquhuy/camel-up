@@ -20,14 +20,14 @@ def start_game(self):
 def move(self, camel_name, steps):
     new_pos = self.camels[camel_name].position_id + steps
     if new_pos > len(self.spaces):
-        self.move_camel_to_space(camel_name, 1)
+        self.move_camel_to_space(camel_name, 17)
         self.declare_winning_camel()
         return
     if self.spaces[new_pos].desert_state != 0:
         self.spaces[new_pos].desert_player.earn_points(1, "owning the desert")
         new_pos += self.spaces[new_pos].desert_state
     if new_pos >= (len(self.spaces) - 1):
-        self.move_camel_to_space(camel_name, 1)
+        self.move_camel_to_space(camel_name, 17)
         self.declare_winning_camel()
         return
     self.report()
@@ -41,7 +41,7 @@ def move_camel_to_space(self, camel_name, space_id):
     else:
         stacks = self.spaces[old_pos].get_stacks(camel_name)
         self.spaces[old_pos].remove_camel(camel_name)
-    space = self.spaces[space_id]
+    space = self.get_space(space_id)
     for name in stacks:
         space.append_camel(name)
         self.camels[name].set_position(space_id)

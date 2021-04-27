@@ -16,6 +16,7 @@ class Game:
         self.players = {}
         self.camels = {camel_name: Camel(camel_name) for camel_name in CAMELS}
         self.spaces = {space_id: Space(space_id) for space_id in range(1, 17)}
+        self.final_space = Space(17)
         self.winning_camel = None
         self.losing_camel = None
         self.final_winning_deck = {camel_name: [] for camel_name in self.camels}
@@ -64,7 +65,8 @@ class Game:
            generate_game_result_info, \
            generate_game_state_info, \
            generate_all_game_info, \
-           generate_personal_info
+           generate_personal_info, \
+           get_space
 
    from ._stages import \
            game_scoring_round, \

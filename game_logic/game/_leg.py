@@ -13,7 +13,7 @@ def check_end_leg(self):
 
 def determine_leg_result(self):
     orders = {name: camel.position_id
-                     + self.spaces[camel.position_id].camels.index(name)/10
+                     + self.get_space(camel.position_id).camels.index(name)/10
               for name, camel in self.camels.items()}
     self.orders = sorted(orders, key=orders.get, reverse=True)
 
