@@ -54,7 +54,8 @@ def generate_personal_info(self, player):
             'points': player.points,
             'current': (player == self.current_player),
             'leg_bets': [{"camel": camel, "bet": bet}
-                          for camel, bet in player.leg_bets.items()]}
+                          for camel, bet in player.leg_bets.items()],
+            'registered': "True"}
 
 def generate_all_game_info(self):
     info = self.generate_board_info()

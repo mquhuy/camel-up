@@ -66,6 +66,8 @@ def create_app():
     def reset_game(param):
         print(param)
         g.reset()
+        for p in g.players.values():
+            g.update_personal_info(player=p)
         g.update_all_game_info()
 
     @io.on('new_game', namespace='/message')
