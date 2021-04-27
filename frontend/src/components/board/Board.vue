@@ -39,7 +39,8 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang=scss scoped>
+@import "../../../scss/_colors.scss";
 .board {
   padding-top: 30px;
   padding-left: 30px;
@@ -61,7 +62,7 @@ export default {
   border: 1px solid black;
   height: 360px;
   width: 360px;
-  background-color: #8b7355;
+  background-color: $brown;
   position: absolute;
   top: 120px;
   left: 120px;

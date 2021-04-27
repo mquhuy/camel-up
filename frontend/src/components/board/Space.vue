@@ -23,7 +23,7 @@
       v-if="space.desertable && active && actionable"
     >
       <button
-        class="winner"
+        :class="winner"
         @click="
           performMove({ action: 'desert', space_id: space.id, state: +1 })
         "
@@ -59,13 +59,14 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang=scss scoped>
+@import "../../../scss/_colors.scss";
 .space {
   border: 1px solid black;
   height: 120px;
   width: 120px;
   background-image: url("../../../img/black-felt.png");
-  background-color: #ffbf00;
+  background-color: $space_bg;
   position: absolute;
 }
 .id1 {
@@ -136,13 +137,13 @@ export default {
 .desert {
   width: 100%;
   height: 100%;
-  background-color: grey;
+  background-color: $desert_bg;
   font-size: 5em;
 }
 .desert-owner {
   width: 100%;
   height: 100%;
-  background-color: red;
+  background-color: $desert_owner_bg;
   color: white;
   font-size: 1.5em;
 }
@@ -156,29 +157,34 @@ export default {
   width: 40px;
   height: auto;
   margin: -5px auto;
-}
-.white {
-  filter: invert(100%) sepia(0%) saturate(7485%) hue-rotate(159deg) brightness(105%) contrast(108%);
-}
-.yellow {
-  filter: invert(100%) sepia(100%) saturate(1914%) hue-rotate(0deg) brightness(101%) contrast(104%);
-}
-.blue {
-  filter: invert(8%) sepia(100%) saturate(6389%) hue-rotate(246deg) brightness(103%) contrast(143%);
-}
-.green {
-  filter: invert(28%) sepia(99%) saturate(1117%) hue-rotate(90deg) brightness(96%) contrast(106%);
-}
-.orange {
-  filter: invert(59%) sepia(70%) saturate(985%) hue-rotate(360deg) brightness(102%) contrast(105%);
+
+  &.white {
+    filter: $white-filter;
+  }
+  &.yellow {
+    filter: $yellow-filter;
+  }
+  &.blue {
+    filter: $blue-filter;
+  }
+  &.green {
+    filter: $green-filter;
+  }
+  &.orange {
+    filter: $orange-filter;
+  }
 }
 .betting-choices {
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-}
-.betting-choices button {
-  flex: 1;
+  button {
+    flex: 1;
+    background-color: $space_bg_hover;
+    &:hover {
+      background-color: $space_bg;
+    }
+  }
 }
 </style>

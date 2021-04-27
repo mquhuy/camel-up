@@ -15,6 +15,7 @@ export default {
 </script>
 
 <style lang=scss scoped>
+@import "../../../scss/_colors.scss";
 .leg-betting-tile {
   border: 1px solid black;
   height: 150px;
@@ -24,7 +25,7 @@ export default {
   align-items: center;
 }
 .card {
-  background-color: #c2a13e;
+  background-color: $leg-betting-bg;
   background-image: url("../../../img/45-degree-fabric-dark.png");
   display: flex;
   flex-direction: column;
@@ -33,34 +34,34 @@ export default {
   width: 100%;
   height: 100%;
   div.green {
-    color: green;
+    color: $green;
   }
   img.green {
-    filter: invert(28%) sepia(99%) saturate(1117%) hue-rotate(90deg) brightness(96%) contrast(106%);
+    filter: $green-filter;
   }
   div.blue {
-    color: blue;
+    color: $blue;
   }
   img.blue {
-    filter: invert(8%) sepia(100%) saturate(6389%) hue-rotate(246deg) brightness(103%) contrast(143%);
+    filter: $blue-filter;
   }
   div.yellow {
-    color: yellow;
+    color: $yellow;
   }
   img.yellow {
-    filter: invert(100%) sepia(100%) saturate(1914%) hue-rotate(0deg) brightness(101%) contrast(104%);
+    filter: $yellow-filter;
   }
   div.white {
-    color: white;
+    color: $white;
   }
   img.white {
-    filter: invert(100%) sepia(0%) saturate(7485%) hue-rotate(159deg) brightness(105%) contrast(108%);
+    filter: $white-filter;
   }
   div.orange {
-    color: orange;
+    color: $orange;
   }
   img.orange {
-    filter: invert(59%) sepia(70%) saturate(985%) hue-rotate(360deg) brightness(102%) contrast(105%);
+    filter: $orange-filter;
   }
   img.camel-image {
     width: 60px;
@@ -74,7 +75,7 @@ export default {
     font-size: 50px;
   }
   &.active:hover {
-    filter: invert(29%) brightness(122%) contrast(105%);
+    background-color: $leg-betting-bg-hover;
   }
 }
 </style>

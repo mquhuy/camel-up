@@ -35,7 +35,8 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="scss" scoped>
+@import "../../../scss/_colors.scss";
 .info {
   height: 100px;
   display: flex;
@@ -83,21 +84,21 @@ export default {
 .die {
 }
 .white {
-  background-color: white;
+  background-color: $white;
 }
 .yellow {
-  background-color: yellow;
+  background-color: $yellow;
 }
 .blue {
-  background-color: blue;
+  background-color: $blue;
   color: white;
 }
 .green {
-  background-color: green;
+  background-color: $green;
   color: white;
 }
 .orange {
-  background-color: orange;
+  background-color: $orange;
 }
 div {
   display: inline-block;
