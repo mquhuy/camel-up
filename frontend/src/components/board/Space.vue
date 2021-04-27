@@ -63,6 +63,7 @@ export default {
   border: 1px solid black;
   height: 120px;
   width: 120px;
+  background-image: url("../../../img/black-felt.png");
   background-color: #ffbf00;
   position: absolute;
 }
