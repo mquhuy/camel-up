@@ -11,6 +11,8 @@
     "core-js": "^3.11.0",
     "lodash": "^4.17.21",
     "npm-install-missing": "^0.1.4",
+    "sass": "^1.32.11",
+    "sass-loader": "^10.1.1",
     "socket.io-client": "^4.0.1",
     "ssri": "^8.0.1",
     "vue": "^3.0.0",

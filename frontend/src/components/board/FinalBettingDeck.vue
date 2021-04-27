@@ -12,14 +12,12 @@
       <div class="betting-choices" v-if="currentBetCamel == card && actionable">
         <button
           class="winner"
-          @class="card"
           @click="performMove({ action: 'bet-winner', camel: currentBetCamel })"
         >
           Bet as final winner
         </button>
         <button
           class="loser"
-          @class="card"
           @click="performMove({ action: 'bet-loser', camel: currentBetCamel })"
         >
           Bet as final loser

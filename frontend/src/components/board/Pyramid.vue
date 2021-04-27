@@ -15,7 +15,10 @@
   </div>
   <div class="roll-button" v-if="actionable">
     <p>Your turn</p>
-    <button @click="performMove({ action: 'roll' })">Roll</button>
+    <button @click="performMove({ action: 'roll' })">
+      Roll
+      <img src="../../../img/pyramid-btn.png" />
+    </button>
   </div>
 </template>
 
@@ -69,9 +72,13 @@ export default {
 }
 .roll-button button {
   width: 120px;
-  height: 60px;
+  height: 120px;
   font-size: 2em;
   font-style: bold;
+}
+.roll-button button img {
+  width: 80%;
+  height: auto;
 }
 .die {
 }
