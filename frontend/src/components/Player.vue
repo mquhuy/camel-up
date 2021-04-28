@@ -41,7 +41,7 @@ div {
   font-size: 40px;
   width: 20px;
   font-size: 25px;
-  color: white;
+  color: $white;
   margin-left: 5px;
 }
 .white {

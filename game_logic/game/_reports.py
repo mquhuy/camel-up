@@ -30,6 +30,8 @@ def generate_board_info(self):
                    for s_id, s in self.spaces.items()},
         }
     info["spaces"][1]["camels"] += self.final_space.camels
+    info["last_bet_winner"] = self.last_bet_winner
+    info["last_bet_loser"] = self.last_bet_loser
     return info
 
 def generate_leg_betting_info(self):
@@ -52,13 +54,14 @@ def generate_game_state_info(self):
     return {"game_state": self.game_state}
 
 def generate_personal_info(self, player):
-    return {'id': player.p_id, 'name': player.name,
+    return {'id': player.p_id,
+            'name': player.name,
             'points': player.points,
             'current': (player == self.current_player),
-            'ready': str(player.ready),
+            'ready': player.ready,
             'leg_bets': [{"camel": camel, "bet": bet}
                           for camel, bet in player.leg_bets.items()],
-            'registered': "True"}
+            'registered': True}
 
 def generate_all_game_info(self):
     info = self.generate_board_info()

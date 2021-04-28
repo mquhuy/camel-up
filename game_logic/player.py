@@ -70,6 +70,7 @@ class Player:
         print("Player {} bets that camel {} wins the game".format(self.name, camel_name))
         if (not (self.final_bets[camel_name])):
             game.final_winning_deck[camel_name].append(self)
+            game.last_bet_winner = self.name
             self.final_bets[camel_name] = True
             return True, ""
         else:
@@ -79,6 +80,7 @@ class Player:
         print("Player {} bet that camel {} loses the game".format(self.name, camel_name))
         if (not (self.final_bets[camel_name])):
             game.final_losing_deck[camel_name].append(self)
+            game.last_bet_loser = self.name
             self.final_bets[camel_name] = True
             return True, ""
         else:

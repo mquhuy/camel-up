@@ -22,6 +22,7 @@ def create_app():
 
     @io.on('register', namespace='/message')
     def register_player(data):
+        print(data)
         name = data["name"]
         n_bots = data["nBots"]
         n_players = data["nPlayers"]

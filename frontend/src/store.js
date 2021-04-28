@@ -19,6 +19,8 @@ const state = {
   betDeck: [],
   rollResults: [],
   ready: false,
+  lastBetWinner: null,
+  lastBetLoser: null,
 };
 
 const mutations = {
@@ -31,6 +33,8 @@ const mutations = {
   },
   UPDATE_SPACES(state, payload) {
     state.spaces = payload.spaces;
+    state.lastBetWinner = payload.last_bet_winner;
+    state.lastBetLoser = payload.last_bet_loser;
   },
   UPDATE_PLAYERS(state, payload) {
     state.players = payload.Players;
@@ -39,14 +43,14 @@ const mutations = {
     state.actions = payload.action;
   },
   UPDATE_PLAYER_INFO(state, payload) {
-    state.registered = payload.registered == "True";
+    state.registered = payload.registered;
     state.name = payload.name;
     state.id = payload.id;
     state.bettingTiles = payload.leg_betting_tiles;
   },
   UPDATE_PERSONAL_INFO(state, payload) {
     state.betDeck = payload.bet_deck;
-    state.ready = payload.ready == "True";
+    state.ready = payload.ready;
   },
   UPDATE_TILES(state, payload) {
     state.bettingTiles = payload.leg_betting_tiles;
@@ -54,13 +58,17 @@ const mutations = {
   UPDATE_ALL(state, payload) {
     state.gameState = payload.game_state;
     state.spaces = payload.spaces;
-    state.name = payload.name;
     state.bettingTiles = payload.leg_betting_tiles;
     state.players = payload.Players;
     state.rollResults = payload.roll_results;
+    state.lastBetWinner = payload.last_bet_winner;
+    state.lastBetLoser = payload.last_bet_loser;
   },
   UPDATE_TURN_STATUS(state, payload) {
     state.turnEnd = payload;
+  },
+  UPDATE_NAME(state, payload) {
+    state.name = payload;
   },
 };
 
@@ -106,7 +114,6 @@ const actions = {
         context.commit("UPDATE_PLAYERS", payload);
         break;
       case "personal":
-        console.log(payload);
         context.commit("UPDATE_PERSONAL_INFO", payload);
         break;
       case "registration-result":

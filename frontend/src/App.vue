@@ -1,7 +1,7 @@
 <template>
   <div v-if="this.gameState == 'registration'" class="buttons">
     <div id="registration">
-      <input v-model="pName" placeholder="Enter your name" />
+      <input :value="name" @input="updateName" placeholder="Enter your name" />
       <p>
         Number of players
         <input v-model.number="nPlayers" :min="0" type="number" />
@@ -10,13 +10,13 @@
         Number of bots
         <input v-model.number="nBots" :min="0" type="number" />
       </p>
-      <button @click="register(pName, nPlayers, nBots)">Register</button>
+      <button @click="register(name, nPlayers, nBots)">Register</button>
     </div>
   </div>
   <div v-if="this.gameState == 'initialization'" class="buttons">
     <div class="join" v-if="!registered">
-      <input v-model="pName" placeholder="Enter your name" />
-      <button @click="register(pName, nPlayers, nBots)">Join</button>
+      <input v-model="name" placeholder="Enter your name" />
+      <button @click="register(name, nPlayers, nBots)">Join</button>
     </div>
     <button v-if="!ready && registered" @click="start">Ready</button>
     <p v-if="ready">Waiting for other players</p>
@@ -24,6 +24,7 @@
   <div v-if="this.gameState == 'play'">
     <div class="container">
       <Board />
+      <BettingDeck />
       <div class="grade-board">
         <div id="players" v-for="player in this.players" :key="player.id">
           <Player :player="player" />
@@ -46,14 +47,15 @@
 <script>
 import Player from "./components/Player";
 import Board from "./components/board/Board";
+import BettingDeck from "./components/BettingDeck";
 import { mapState, mapActions } from "vuex";
 
 export default {
   name: "App",
   computed: {
     ...mapState([
-      "name",
       "id",
+      "name",
       "registered",
       "players",
       "gameState",
@@ -69,7 +71,6 @@ export default {
     return {
       nBots: 0,
       nPlayers: 0,
-      pName: "",
     };
   },
   mounted() {
@@ -84,10 +85,10 @@ export default {
       this.$store.dispatch("sendCommand", { command: "start" });
       this.ready = true;
     },
-    register: function (pName, nPlayers, nBots) {
+    register: function (name, nPlayers, nBots) {
       this.$store.dispatch("sendCommand", {
         command: "register",
-        name: pName,
+        name: name,
         nPlayers: nPlayers,
         nBots: nBots,
       });
@@ -98,28 +99,39 @@ export default {
     new_game: function () {
       this.$store.dispatch("sendCommand", { command: "new_game" });
     },
+    updateName (e) {
+      this.$store.commit("UPDATE_NAME", e.target.value);
+    },
     ...mapActions(["performMove"]),
   },
   components: {
     Board,
+    BettingDeck,
     Player,
   },
 };
 </script>
 
-<style>
+<style lang=scss>
+@import "../scss/_colors.scss";
+body {
+  background-color: $background;
+  background-image: url("https://www.transparenttextures.com/patterns/tileable-wood-colored.png");
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 .container {
   display: flex;
 }
 .grade-board {
+  background-color: $white;
+  padding: 5px 15px;
+  border-radius: 25px;
   display: flex;
   flex-direction: column;
 }

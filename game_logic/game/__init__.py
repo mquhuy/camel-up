@@ -21,6 +21,8 @@ class Game:
         self.losing_camel = None
         self.final_winning_deck = {camel_name: [] for camel_name in self.camels}
         self.final_losing_deck = {camel_name: [] for camel_name in self.camels}
+        self.last_bet_winner = None
+        self.last_bet_loser = None
         self.init_bots(n_bots)
         self.game_state = "registration"
         self.playing_order = None
