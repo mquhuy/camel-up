@@ -17,6 +17,7 @@ const state = {
   bettingTiles: [],
   turnEnd: false,
   betDeck: [],
+  rollResults: [],
 };
 
 const mutations = {
@@ -54,6 +55,7 @@ const mutations = {
     state.name = payload.name;
     state.bettingTiles = payload.leg_betting_tiles;
     state.players = payload.Players;
+    state.rollResults = payload.roll_results;
   },
   UPDATE_TURN_STATUS(state, payload) {
     state.turnEnd = payload;

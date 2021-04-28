@@ -5,6 +5,7 @@ def roll_pyramid_dice(self):
     camel_name = self.pyramid_dices.pop(camel_index)
     steps = random.randrange(3) + 1
     print("*** Roll dice: {} with step {}".format(camel_name, steps))
+    self.roll_results.append({"die": camel_name, "number": steps})
     self.move(camel_name, steps)
     return camel_name, steps
 

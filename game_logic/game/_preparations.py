@@ -26,6 +26,7 @@ def reset_dices(self):
     self.betting_tiles = {camel_name: [prize for prize in LEG_BET_PRIZES]
                           for camel_name in self.camels}
     self.rollers = []
+    self.roll_results = []
 
 def register(self, new_player_name, human=True):
     print("Registering player {}".format(new_player_name))
@@ -72,6 +73,7 @@ def reset(self, keep_players=True):
         camel.reset()
     for space in self.spaces.values():
         space.reset()
+    self.final_space.reset()
     self.final_winning_deck = {camel_name: [] for camel_name in self.camels}
     self.final_losing_deck = {camel_name: [] for camel_name in self.camels}
     self.winning_camel = None

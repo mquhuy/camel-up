@@ -65,6 +65,7 @@ def generate_all_game_info(self):
     info.update(self.generate_players_info())
     info.update(self.generate_game_state_info())
     info.update(self.generate_game_result_info())
+    info["roll_results"] = self.roll_results
     return info
 
 def get_space(self, space_id):

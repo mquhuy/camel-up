@@ -1,4 +1,9 @@
 <template>
+  <div class="rolled-dice">
+    <div v-for="roll in rollResults" :key="roll.die" class="rolled-die" :class="roll.die">
+      {{ roll.number }}
+    </div>
+  </div>
   <div v-if="actions && !actionable" class="action">
     <div v-if="actions.type != 'result'" class="info">
       {{ actions.player }} performs action {{ actions.action }}
@@ -27,7 +32,7 @@ import { mapState, mapGetters, mapActions } from "vuex";
 export default {
   name: "Pyramid",
   computed: {
-    ...mapState(["actions"]),
+    ...mapState(["actions", "rollResults"]),
     ...mapGetters(["actionable"]),
   },
   methods: mapActions(["performMove"]),

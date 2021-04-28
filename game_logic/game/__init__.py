@@ -29,6 +29,7 @@ class Game:
         self.id = None
         self.io = None
         self.expected_n_players = 0
+        self.roll_results = []
 
    # Leg
    from ._preparations import \
