@@ -18,8 +18,8 @@
       <input v-model="pName" placeholder="Enter your name" />
       <button @click="register(pName, nPlayers, nBots)">Join</button>
     </div>
-    <button v-if="!this.ready && registered" @click="start">Ready</button>
-    <p v-if="this.ready">Waiting for other players</p>
+    <button v-if="!ready && registered" @click="start">Ready</button>
+    <p v-if="ready">Waiting for other players</p>
   </div>
   <div v-if="this.gameState == 'play'">
     <div class="container">
@@ -62,6 +62,7 @@ export default {
       "results",
       "turnEnd",
       "betDeck",
+      "ready",
     ]),
   },
   data() {
@@ -69,7 +70,6 @@ export default {
       nBots: 0,
       nPlayers: 0,
       pName: "",
-      ready: false,
     };
   },
   mounted() {

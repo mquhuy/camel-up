@@ -55,6 +55,7 @@ def generate_personal_info(self, player):
     return {'id': player.p_id, 'name': player.name,
             'points': player.points,
             'current': (player == self.current_player),
+            'ready': str(player.ready),
             'leg_bets': [{"camel": camel, "bet": bet}
                           for camel, bet in player.leg_bets.items()],
             'registered': "True"}

@@ -18,6 +18,7 @@ const state = {
   turnEnd: false,
   betDeck: [],
   rollResults: [],
+  ready: false,
 };
 
 const mutations = {
@@ -45,6 +46,7 @@ const mutations = {
   },
   UPDATE_PERSONAL_INFO(state, payload) {
     state.betDeck = payload.bet_deck;
+    state.ready = payload.ready == "True";
   },
   UPDATE_TILES(state, payload) {
     state.bettingTiles = payload.leg_betting_tiles;
