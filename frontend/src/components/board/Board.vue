@@ -59,7 +59,7 @@ export default {
   visibility: hidden;
 }
 .pyramid {
-  border: 1px solid black;
+  border: 1px solid $white-border;
   height: 360px;
   width: 360px;
   background-color: $brown;

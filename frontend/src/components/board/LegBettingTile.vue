@@ -17,9 +17,9 @@ export default {
 <style lang=scss scoped>
 @import "../../../scss/_colors.scss";
 .leg-betting-tile {
-  border: 1px solid black;
+  border: none;
   height: 150px;
-  width: 100px;
+  width: 112px;
   display: flex;
   justify-content: center;
   align-items: center;

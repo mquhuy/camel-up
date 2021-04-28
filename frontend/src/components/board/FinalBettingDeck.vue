@@ -51,7 +51,7 @@ export default {
 }
 .deck-card {
   margin: 10px;
-  border: 1px solid black;
+  border: 1px solid $white-border;
   height: 150px;
   width: 100px;
   display: flex;
@@ -70,20 +70,24 @@ export default {
 }
 .betting-choices button {
   flex: 1;
+  border: 1px solid $white-border;
+  &:hover {
+    background-color: $asbestos;
+  }
 }
 .green {
-  background-color: green;
+  background-color: $green;
 }
 .blue {
-  background-color: blue;
+  background-color: $blue;
 }
 .yellow {
-  background-color: yellow;
+  background-color: $yellow;
 }
 .white {
-  background-color: white;
+  background-color: $white;
 }
 .orange {
-  background-color: orange;
+  background-color: $orange;
 }
 </style>

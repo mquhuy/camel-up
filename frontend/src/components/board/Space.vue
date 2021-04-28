@@ -62,7 +62,7 @@ export default {
 <style lang=scss scoped>
 @import "../../../scss/_colors.scss";
 .space {
-  border: 1px solid black;
+  border: 1px solid $white-border;
   height: 120px;
   width: 120px;
   background-image: url("../../../img/black-felt.png");
@@ -70,7 +70,7 @@ export default {
   position: absolute;
 }
 .id1 {
-  border-left: 5px dashed black;
+  border-left: 7px dashed $white-border;
   top: 0px;
   left: 240px;
 }
@@ -131,6 +131,7 @@ export default {
   left: 0px;
 }
 .id16 {
+  border-right: 7px dashed $white-border;
   top: 0px;
   left: 120px;
 }
@@ -180,6 +181,7 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   button {
+    border: none;
     flex: 1;
     background-color: $space_bg_hover;
     &:hover {

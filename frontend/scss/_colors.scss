@@ -2,22 +2,27 @@ $brown: #8b7355;
 $space_bg: #ffbf00;
 $space_bg_hover: #d39b02;
 $desert_bg: grey;
-$desert_owner_bg: red;
+$desert_owner_bg: #F44336;
 
-$white: white;
-$white-filter: invert(100%) sepia(0%) saturate(7485%) hue-rotate(159deg) brightness(105%) contrast(108%);
+$white: #EFEFEF;
+$white-filter: invert(97%) sepia(3%) saturate(470%) hue-rotate(254deg) brightness(108%) contrast(87%);
 
-$yellow: yellow;
-$yellow-filter: invert(100%) sepia(100%) saturate(1914%) hue-rotate(0deg) brightness(101%) contrast(104%);
+$yellow: #FFEB3B;
+$yellow-filter: invert(100%) sepia(63%) saturate(3906%) hue-rotate(324deg) brightness(109%) contrast(106%);
 
-$blue: blue;
-$blue-filter: invert(8%) sepia(100%) saturate(6389%) hue-rotate(246deg) brightness(103%) contrast(143%);
+$blue: #3F51B5;
+$blue-filter: invert(31%) sepia(54%) saturate(739%) hue-rotate(186deg) brightness(102%) contrast(89%);
 
-$green: green;
-$green-filter: invert(28%) sepia(99%) saturate(1117%) hue-rotate(90deg) brightness(96%) contrast(106%);
+$green: #4CAF50;
+$green-filter: invert(61%) sepia(19%) saturate(1194%) hue-rotate(73deg) brightness(91%) contrast(95%);
 
-$orange: orange;
-$orange-filter: invert(59%) sepia(70%) saturate(985%) hue-rotate(360deg) brightness(102%) contrast(105%);
+$orange: #FF5722;
+$orange-filter: invert(48%) sepia(80%) saturate(3685%) hue-rotate(346deg) brightness(100%) contrast(101%);
 
 $leg-betting-bg: #c2a13e;
-$leg-betting-bg-hover: #7a6423;
+$leg-betting-bg-hover: #795548;
+
+$black: #212121;
+$white-border: #FCFCFC;
+
+$asbestos: #7F8C8D;

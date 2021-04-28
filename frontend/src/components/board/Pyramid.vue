@@ -40,7 +40,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss" scoped>
+<style lang=scss scoped>
 @import "../../../scss/_colors.scss";
 .info {
   height: 100px;
@@ -49,10 +49,22 @@ export default {
   flex-direction: column;
   color: white;
 }
+.rolled-dice {
+  display: flex;
+  .rolled-die {
+    width: 30px;
+    height: 30px;
+    margin: 10px 5px 0 5px ;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25em;
+  }
+}
 .roll {
   width: 90px;
   height: 90px;
-  color: black;
+  color: $black;
   font-size: 3em;
   font-style: bold;
   display: flex;

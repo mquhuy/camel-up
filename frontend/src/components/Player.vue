@@ -1,12 +1,12 @@
 <template>
-    <div :class="{ active: player.current }">
-      {{ player.name }}: {{ player.points }}
+  <div class="name" :class="{ active: player.current }">
+    {{ player.name }}: {{ player.points }}
+  </div>
+  <div v-for="bet in bets" :key="bet.camel">
+    <div v-for="card in bet.bet" :key="card" class="card" :class="bet.camel">
+      {{ card }}
     </div>
-    <div v-for="bet in bets" :key="bet.camel">
-      <div v-for="card in bet.bet" :key="card" class="card" :class="bet.camel">
-          {{ card }}
-      </div>
-    </div>
+  </div>
 </template>
 
 <script>
@@ -25,9 +25,13 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang=scss scoped>
+@import "../../scss/_colors.scss";
+.name {
+  margin: 20px 0 0;
+  font-size: 30px;
+}
 .active {
-  margin: 40px 0 0;
   font-size: 80px;
 }
 div {
@@ -38,23 +42,25 @@ div {
   width: 20px;
   font-size: 25px;
   color: white;
-  border: 1px solid black;
+  margin-left: 5px;
 }
 .white {
-  background-color: white;
-  color: black !important;
+  background-color: $white;
+  color: $black !important;
+  outline: 0.5px solid $black;
+  outline-offset: -2px;
 }
 .orange {
-  background-color: orange;
+  background-color: $orange;
 }
 .yellow {
-  background-color: yellow;
-  color: black !important;
+  background-color: $yellow;
+  color: $black !important;
 }
 .green {
-  background-color: green;
+  background-color: $green;
 }
 .blue {
-  background-color: blue;
+  background-color: $blue;
 }
 </style>
