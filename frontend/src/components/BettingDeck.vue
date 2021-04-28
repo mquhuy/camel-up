@@ -29,8 +29,8 @@ export default {
   margin-top: 190px;
   margin-right: 50px;
   .card {
-    height: 180px;
-    width: 115px;
+    height: 220px;
+    width: 150px;
     color: $white;
     background-color: $brown;
     display: flex;
@@ -42,7 +42,7 @@ export default {
     background-position: center;
   }
   .active {
-    font-size: 40px;
+    font-size: 30px;
     background-repeat: repeat;
     background-image: url("../../img/45-degree-fabric-dark.png");
     border: 1px solid $white-border;
