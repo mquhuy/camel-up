@@ -1,6 +1,11 @@
 <template>
   <div class="rolled-dice">
-    <div v-for="roll in rollResults" :key="roll.die" class="rolled-die" :class="roll.die">
+    <div
+      v-for="roll in rollResults"
+      :key="roll.die"
+      class="rolled-die"
+      :class="roll.die"
+    >
       {{ roll.number }}
     </div>
   </div>
@@ -40,7 +45,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang=scss scoped>
+<style lang="scss" scoped>
 @import "../../../scss/_colors.scss";
 .info {
   height: 100px;
@@ -54,7 +59,7 @@ export default {
   .rolled-die {
     width: 30px;
     height: 30px;
-    margin: 10px 5px 0 5px ;
+    margin: 10px 5px 0 5px;
     display: flex;
     align-items: center;
     justify-content: center;

@@ -1,10 +1,14 @@
 <template>
-    <div class="leg-betting-tile" :class="tile.camel">
-      <div class="card" :class="{active: tile.bet != 0}">
-        <img class="camel-image" :class="tile.camel" src="../../../img/camel.svg" />
-        <div v-if="tile.bet != 0" :class="tile.camel">{{ tile.bet }}</div>
-      </div>
+  <div class="leg-betting-tile" :class="tile.camel">
+    <div class="card" :class="{ active: tile.bet != 0 }">
+      <img
+        class="camel-image"
+        :class="tile.camel"
+        src="../../../img/camel.svg"
+      />
+      <div v-if="tile.bet != 0" :class="tile.camel">{{ tile.bet }}</div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -14,7 +18,7 @@ export default {
 };
 </script>
 
-<style lang=scss scoped>
+<style lang="scss" scoped>
 @import "../../../scss/_colors.scss";
 .leg-betting-tile {
   border: none;

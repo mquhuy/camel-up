@@ -11,7 +11,7 @@ const io = new VueSocketIO({
     store,
     actionPrefix: "SOCKET_",
     mutationPrefix: "SOCKET_",
-  }
+  },
 });
 
 createApp(App).use(store).use(io).mount("#app");

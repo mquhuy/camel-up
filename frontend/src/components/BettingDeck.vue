@@ -19,7 +19,7 @@ export default {
 };
 </script>
 
-<style lang=scss scoped>
+<style lang="scss" scoped>
 @import "../../scss/_colors.scss";
 .betting-deck {
   display: flex;

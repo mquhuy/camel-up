@@ -34,7 +34,7 @@
   </div>
   <div class="result" v-if="this.gameState == 'result'">
     <div class="grade-board">
-    <p>Final results</p>
+      <p>Final results</p>
       <div id="players" v-for="player in this.results" :key="player.id">
         <Player :player="player" />
       </div>
@@ -99,7 +99,7 @@ export default {
     new_game: function () {
       this.$store.dispatch("sendCommand", { command: "new_game" });
     },
-    updateName (e) {
+    updateName(e) {
       this.$store.commit("UPDATE_NAME", e.target.value);
     },
     ...mapActions(["performMove"]),
@@ -112,7 +112,7 @@ export default {
 };
 </script>
 
-<style lang=scss>
+<style lang="scss">
 @import "../scss/_colors.scss";
 body {
   background-color: $background;

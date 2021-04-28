@@ -14,9 +14,9 @@ export default {
   name: "Player",
   props: ["player"],
   computed: {
-    bets: function() {
+    bets: function () {
       if (this.player.leg_bets) {
-        return this.player.leg_bets.filter(bet => bet.bet.length > 0);
+        return this.player.leg_bets.filter((bet) => bet.bet.length > 0);
       }
       return [];
     },
@@ -25,7 +25,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang=scss scoped>
+<style lang="scss" scoped>
 @import "../../scss/_colors.scss";
 .name {
   margin: 20px 0 0;

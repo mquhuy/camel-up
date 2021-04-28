@@ -59,7 +59,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang=scss scoped>
+<style lang="scss" scoped>
 @import "../../../scss/_colors.scss";
 .space {
   border: 1px solid $white-border;
