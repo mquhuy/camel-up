@@ -116,7 +116,7 @@ export default {
 @import "../scss/_colors.scss";
 body {
   background-color: $background;
-  background-image: url("https://www.transparenttextures.com/patterns/tileable-wood-colored.png");
+  background-image: url("../img/tileable-wood-colored.png");
 }
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
