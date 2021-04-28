@@ -1,5 +1,5 @@
 <template>
-  <div v-if="this.gameState == 'registration'" class="buttons">
+  <div v-if="this.gameState == 'registration'" class="grade-board">
     <div id="registration">
       <input :value="name" @input="updateName" placeholder="Enter your name" />
       <p>
@@ -33,8 +33,8 @@
     </div>
   </div>
   <div class="result" v-if="this.gameState == 'result'">
-    <p>Final results</p>
     <div class="grade-board">
+    <p>Final results</p>
       <div id="players" v-for="player in this.results" :key="player.id">
         <Player :player="player" />
       </div>
@@ -130,7 +130,7 @@ body {
 }
 .grade-board {
   background-color: $white;
-  padding: 5px 15px;
+  padding: 15px;
   border-radius: 25px;
   display: flex;
   flex-direction: column;

@@ -78,6 +78,8 @@ def reset(self, keep_players=True):
     self.final_losing_deck = {camel_name: [] for camel_name in self.camels}
     self.winning_camel = None
     self.losing_camel = None
+    self.last_bet_winner = None
+    self.last_bet_loser = None
     self.playing_order = None
     self.reset_dices()
 
