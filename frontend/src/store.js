@@ -2,33 +2,40 @@ import { createStore } from "vuex";
 import createPersistedState from "vuex-persistedstate";
 import socket from "./socket";
 
-const state = {
-  isConnected: false,
-  spaces: [],
-  registered: false,
-  name: "",
-  id: -100,
-  players: [],
-  pName: "",
-  pID: "",
-  actions: null,
-  gameState: "registration",
-  results: {},
-  bettingTiles: [],
-  turnEnd: false,
-  betDeck: [],
-  rollResults: [],
-  ready: false,
-  lastBetWinner: null,
-  lastBetLoser: null,
+const getDefaultState = () => {
+  return {
+    gameId: null,
+    isConnected: false,
+    spaces: [],
+    registered: false,
+    name: "",
+    id: -100,
+    players: [],
+    actions: null,
+    gameStage: "initialization",
+    results: {},
+    bettingTiles: [],
+    turnEnd: false,
+    betDeck: [],
+    rollResults: [],
+    ready: false,
+    lastBetWinner: null,
+    lastBetLoser: null,
+  }
 };
 
+const state = getDefaultState()
+
 const mutations = {
-  UPDATE_GAME_STATE(state, payload) {
-    state.gameState = payload.game_state;
+  RESET_ALL(state) {
+    Object.assign(state, getDefaultState());
+  },
+  UPDATE_GAME_INFO(state, payload) {
+    state.gameId = payload.game_id;
+    state.gameStage = payload.game_stage;
   },
   UPDATE_GAME_RESULT(state, payload) {
-    state.gameState = payload.game_state;
+    state.gameStage = payload.game_stage;
     state.results = payload.scoring;
   },
   UPDATE_SPACES(state, payload) {
@@ -56,7 +63,7 @@ const mutations = {
     state.bettingTiles = payload.leg_betting_tiles;
   },
   UPDATE_ALL(state, payload) {
-    state.gameState = payload.game_state;
+    state.gameStage = payload.game_stage;
     state.spaces = payload.spaces;
     state.bettingTiles = payload.leg_betting_tiles;
     state.players = payload.Players;
@@ -104,7 +111,7 @@ const actions = {
         context.commit("UPDATE_SPACES", payload);
         break;
       case "game-start":
-        context.commit("UPDATE_GAME_STATE", payload);
+        context.commit("UPDATE_GAME_STAGE", payload);
         context.commit("UPDATE_TURN_STATUS", false);
         break;
       case "game-end-result":
@@ -116,9 +123,12 @@ const actions = {
       case "personal":
         context.commit("UPDATE_PERSONAL_INFO", payload);
         break;
-      case "registration-result":
+      case "registration-success":
         context.commit("UPDATE_PLAYER_INFO", payload);
-        context.commit("UPDATE_GAME_STATE", payload);
+        context.commit("UPDATE_GAME_INFO", payload);
+        break;
+      case "registration-error":
+        context.commit("RESET_ALL");
         break;
       default:
         console.log(type);
@@ -136,17 +146,11 @@ const actions = {
   sendCommand({ state }, details) {
     const command = details.command;
     details.id = state.id;
+    details.game_id = state.gameId;
     socket.emit(command, details);
   },
 
-  performMove({ state, dispatch }, params) {
-    if (!getters.isCurrent) {
-      console.log("Wait until your turn");
-      return;
-    }
-    if (state.turnEnd) {
-      return;
-    }
+  performMove({ dispatch }, params) {
     const action = params.action;
     switch (action) {
       case "bet-leg":
@@ -178,7 +182,14 @@ const actions = {
     dispatch("sendAction", [1, 0, 0, camel.camel]);
   },
 
-  sendAction({ dispatch, commit }, actions) {
+  sendAction({ state, dispatch, commit }, actions) {
+    if (!getters.isCurrent) {
+      console.log("Wait until your turn");
+      return;
+    }
+    if (state.turnEnd) {
+      return;
+    }
     commit("UPDATE_TURN_STATUS", true);
     dispatch("sendCommand", { command: "action_choice", actions: actions });
   },
@@ -187,7 +198,7 @@ const actions = {
 const getters = {
   isConnected: (state) => state.isConnected,
   isCurrent(state) {
-    if (!state.gameState == "play" || state.id == -100) {
+    if (!state.gameStage == "play" || state.id == -100) {
       return false;
     }
     const localPlayer = state.players.find((player) => player.id == state.id);

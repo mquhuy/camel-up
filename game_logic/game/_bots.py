@@ -22,7 +22,7 @@ def start(self):
         self.run_leg()
         self.report()
         print("------------------- End leg ---------------------")
-    self.game_state = "result"
+    self.game_stage = "result"
     self.losing_camel = self.orders[-1]
     self.game_scoring_round()
     self.determine_game_result()

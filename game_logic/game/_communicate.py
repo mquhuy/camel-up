@@ -13,8 +13,11 @@ def set_io_instance(self, io_instance):
 
 def emit_info(self, info_type, info, room=None):
     info.update({"type": info_type})
+    info.update(self.generate_basic_info())
     if room is not None:
         self.io.emit("info", info, to=room, namespace="/message")
+    elif self.id is not None:
+        self.io.emit("info", info, to=self.id, namespace="/message")
     else:
         self.io.emit("info", info, namespace="/message")
 
@@ -28,11 +31,21 @@ def update_players_info(self, room=None):
     info.update(self.generate_leg_betting_info())
     self.emit_info("players", info, room)
 
-def update_personal_info(self, player=None, player_info=None):
-    if player is not None:
-        player_info = self.generate_personal_info(player)
-        player_info.update(player.generate_bet_deck())
+def update_personal_info(self, player=None, player_id=None):
+    if player is None:
+        player = self.players.get(player_id, None)
+    player_info = self.generate_personal_info(player)
+    player_info.update(player.generate_bet_deck())
     self.emit_info("personal", player_info, room=player_info["id"])
+
+def send_registered_success(self, player_id):
+    player = self.players.get(player_id, None)
+    self.emit_info("registration-success",
+                    {"registered": True,
+                     "game_stage": self.game_stage,
+                     "id": player.p_id,
+                     "game_id": self.id,
+                     "name": player.name}, room=player.p_id)
 
 def update_leg_betting_info(self, room=None):
     info = self.generate_leg_betting_info()

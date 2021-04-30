@@ -24,6 +24,6 @@ def run_a_game(game):
     game.losing_camel = game.orders[-1]
     game.game_scoring_round()
     game.determine_game_result()
-    game.game_state = "result"
+    game.next_stage()
     game.update_all_game_info()
     game.send_game_result()

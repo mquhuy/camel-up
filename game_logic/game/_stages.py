@@ -1,4 +1,12 @@
 from ..config import FINAL_BET_WINNER_PRIZES
+STAGES = ["initialization", "registration", "play", "result"]
+
+def next_stage(self):
+    if self.game_stage is None:
+        stage_idx = 0
+    else:
+        stage_idx = (STAGES.index(self.game_stage) + 1) % len(STAGES)
+    self.game_stage = STAGES[stage_idx]
 
 def game_scoring_round(self):
     def final_rewarding(betting_dict, betting_dict_name):

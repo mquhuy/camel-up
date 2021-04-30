@@ -12,6 +12,11 @@ def report(self):
         print("Scoring table:")
         print(self.final_scores)
 
+def generate_basic_info(self):
+    if self.id is None:
+        return {}
+    return {"game_id": self.id}
+
 def generate_players_info(self):
     if self.players == {} or self.playing_order is None:
         return {}
@@ -45,13 +50,13 @@ def generate_game_result_info(self):
         return {}
     info = {
         'winning_camel': self.winning_camel,
-        'game_state': self.game_state,
         'scoring': [{"name": name, "points": points}
                     for name, points in self.final_scores.items()]}
+    info.update(self.generate_game_stage_info())
     return info
 
-def generate_game_state_info(self):
-    return {"game_state": self.game_state}
+def generate_game_stage_info(self):
+    return {"game_stage": self.game_stage}
 
 def generate_personal_info(self, player):
     return {'id': player.p_id,
@@ -67,7 +72,7 @@ def generate_all_game_info(self):
     info = self.generate_board_info()
     info.update(self.generate_leg_betting_info())
     info.update(self.generate_players_info())
-    info.update(self.generate_game_state_info())
+    info.update(self.generate_game_stage_info())
     info.update(self.generate_game_result_info())
     info["roll_results"] = self.roll_results
     return info

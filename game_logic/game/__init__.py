@@ -1,4 +1,3 @@
-import enum
 import random
 
 try:
@@ -12,7 +11,7 @@ except(ImportError, ValueError):
 
 
 class Game:
-   def __init__(self, n_bots=0):
+   def __init__(self, n_bots=0, io_instance=None):
         self.players = {}
         self.camels = {camel_name: Camel(camel_name) for camel_name in CAMELS}
         self.spaces = {space_id: Space(space_id) for space_id in range(1, 17)}
@@ -24,12 +23,13 @@ class Game:
         self.last_bet_winner = None
         self.last_bet_loser = None
         self.init_bots(n_bots)
-        self.game_state = "registration"
+        self.game_stage = None
+        self.next_stage()
         self.playing_order = None
         self.current_player = None
         self.reset_dices()
         self.id = None
-        self.io = None
+        self.io = io_instance
         self.expected_n_players = 0
         self.roll_results = []
 
@@ -62,16 +62,18 @@ class Game:
 
    from ._reports import \
            report, \
+           generate_basic_info, \
            generate_players_info, \
            generate_board_info, \
            generate_leg_betting_info, \
            generate_game_result_info, \
-           generate_game_state_info, \
+           generate_game_stage_info, \
            generate_all_game_info, \
            generate_personal_info, \
            get_space
 
    from ._stages import \
+           next_stage, \
            game_scoring_round, \
            determine_game_result, \
            declare_winning_camel
@@ -81,6 +83,7 @@ class Game:
            set_io_instance, \
            emit_info, \
            send_action_info, \
+           send_registered_success, \
            update_players_info, \
            update_personal_info, \
            update_leg_betting_info, \

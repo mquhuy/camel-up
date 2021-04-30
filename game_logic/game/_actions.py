@@ -10,7 +10,7 @@ def roll_pyramid_dice(self):
     return camel_name, steps
 
 def start_game(self):
-    self.game_state = "play"
+    self.next_stage()
     init_locs = self.roll_init_dice()
     print("Initialized camel's starting position:")
     camel_names = list(init_locs.keys())

@@ -65,10 +65,10 @@ def reset(self, keep_players=True):
     if keep_players:
         for player in self.players.values():
             player.reset()
-        self.game_state = "initialization"
+        self.game_stage = "initialization"
     else:
         self.players = {}
-        self.game_state = "registration"
+        self.game_stage = "registration"
     for camel in self.camels.values():
         camel.reset()
     for space in self.spaces.values():

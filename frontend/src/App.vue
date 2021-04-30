@@ -1,27 +1,17 @@
 <template>
-  <div v-if="this.gameState == 'registration'" class="grade-board">
-    <div id="registration">
-      <input :value="name" @input="updateName" placeholder="Enter your name" />
-      <p>
-        Number of players
-        <input v-model.number="nPlayers" :min="0" type="number" />
-      </p>
-      <p>
-        Number of bots
-        <input v-model.number="nBots" :min="0" type="number" />
-      </p>
-      <button @click="register(name, nPlayers, nBots)">Register</button>
-    </div>
+  <div v-if="this.gameStage == 'initialization'" class="grade-board">
+    <Register />
   </div>
-  <div v-if="this.gameState == 'initialization'" class="buttons">
-    <div class="join" v-if="!registered">
-      <input v-model="name" placeholder="Enter your name" />
-      <button @click="register(name, nPlayers, nBots)">Join</button>
-    </div>
+  <div class="join" v-if="!registered">
+    <input v-model="playerName" placeholder="Enter your name" />
+    <input v-model="joinId" placeholder="Game Id" />
+    <button @click="join(playerName, joinId, id)">Join</button>
+  </div>
+  <div v-if="this.gameStage == 'registration'" class="buttons">
     <button v-if="!ready && registered" @click="start">Ready</button>
     <p v-if="ready">Waiting for other players</p>
   </div>
-  <div v-if="this.gameState == 'play'">
+  <div v-if="this.gameStage == 'play'">
     <div class="container">
       <Board />
       <BettingDeck />
@@ -32,7 +22,7 @@
       </div>
     </div>
   </div>
-  <div class="result" v-if="this.gameState == 'result'">
+  <div class="result" v-if="this.gameStage == 'result'">
     <div class="grade-board">
       <p>Final results</p>
       <div id="players" v-for="player in this.results" :key="player.id">
@@ -45,6 +35,7 @@
 </template>
 
 <script>
+import Register from "./components/Register";
 import Player from "./components/Player";
 import Board from "./components/board/Board";
 import BettingDeck from "./components/BettingDeck";
@@ -54,11 +45,12 @@ export default {
   name: "App",
   computed: {
     ...mapState([
+      "gameId",
       "id",
       "name",
       "registered",
       "players",
-      "gameState",
+      "gameStage",
       "actions",
       "bettingTiles",
       "results",
@@ -67,11 +59,11 @@ export default {
       "ready",
     ]),
   },
-  data() {
+  data () {
     return {
-      nBots: 0,
-      nPlayers: 0,
-    };
+      playerName: null,
+      joinId: null,
+    }
   },
   mounted() {
     this.$store.dispatch("sendCommand", {
@@ -85,26 +77,24 @@ export default {
       this.$store.dispatch("sendCommand", { command: "start" });
       this.ready = true;
     },
-    register: function (name, nPlayers, nBots) {
-      this.$store.dispatch("sendCommand", {
-        command: "register",
-        name: name,
-        nPlayers: nPlayers,
-        nBots: nBots,
-      });
-    },
     reset: function () {
       this.$store.dispatch("sendCommand", { command: "reset" });
     },
     new_game: function () {
       this.$store.dispatch("sendCommand", { command: "new_game" });
     },
-    updateName(e) {
-      this.$store.commit("UPDATE_NAME", e.target.value);
+    join: function (name, gameId, playerId) {
+      this.$store.dispatch("sendCommand", {
+        command: "join",
+        name: name,
+        gameId: gameId,
+        id: playerId,
+      });
     },
     ...mapActions(["performMove"]),
   },
   components: {
+    Register,
     Board,
     BettingDeck,
     Player,

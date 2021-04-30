@@ -1,6 +1,6 @@
 <template>
   <div class="leg-betting-tile" :class="tile.camel">
-    <div class="card" :class="{ active: tile.bet != 0 }">
+    <div class="card" :class="{ active: tile.bet != 0 && actionable }">
       <img
         class="camel-image"
         :class="tile.camel"
@@ -12,9 +12,11 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "LegBettingTile",
-  props: ["tile", "inactive"],
+  props: ["tile"],
+  computed: mapGetters(["actionable"]),
 };
 </script>
 
