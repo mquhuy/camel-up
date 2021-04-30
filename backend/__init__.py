@@ -68,17 +68,26 @@ def create_app():
 
     @io.on('new_game', namespace='/message')
     def reset(param):
-        g = games.get(str(param["game_id"]), None)
-        g.reset(False)
-        g.update_all_game_info()
+        game_id = str(param["game_id"])
+        g = games.get(game_id, None)
+        if g is not None:
+            g.reset(False)
+            g.update_all_game_info()
 
+    @io.on('end_game', namespace='/message')
+    def end_game(param):
+        game_id = str(param["game_id"])
+        g = games.get(game_id, None)
+        if g is not None:
+            g.send_destruct_command()
+            del g
+            del games[game_id]
 
     @io.on('next_player', namespace='/message')
     def next_player(data):
         g = games.get(str(data["game_id"]), None)
         g.next_player()
         current_player = g.current_player.name
-        print(current_player)
         g.io.emit('info', {'type': 'current_player',
                            'info': current_player}, namespace='/message')
 
@@ -97,7 +106,7 @@ def create_app():
 
     @io.on('join', namespace="/message")
     def join_game(data):
-        g = games[str(data["gameId"])]
+        g = games[str(data["game_id"])]
         if g is not None:
             player = g.players.get(data["id"], None)
             if player is not None:

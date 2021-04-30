@@ -77,6 +77,9 @@ const mutations = {
   UPDATE_NAME(state, payload) {
     state.name = payload;
   },
+  UPDATE_GAME_ID(state, payload) {
+    state.gameId = payload;
+  },
 };
 
 const actions = {
@@ -117,6 +120,9 @@ const actions = {
       case "game-end-result":
         context.commit("UPDATE_GAME_RESULT", payload);
         break;
+      case "game-deletion":
+        context.commit("RESET_ALL");
+        break;
       case "players":
         context.commit("UPDATE_PLAYERS", payload);
         break;
@@ -147,6 +153,7 @@ const actions = {
     const command = details.command;
     details.id = state.id;
     details.game_id = state.gameId;
+    details.name = state.name;
     socket.emit(command, details);
   },
 

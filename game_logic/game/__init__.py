@@ -83,6 +83,7 @@ class Game:
            set_io_instance, \
            emit_info, \
            send_action_info, \
+           send_destruct_command, \
            send_registered_success, \
            update_players_info, \
            update_personal_info, \

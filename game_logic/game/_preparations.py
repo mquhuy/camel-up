@@ -62,13 +62,13 @@ def roll_init_dice(self):
 
 def reset(self, keep_players=True):
     # Reset the game state to prepare for a new game with same players
+    self.game_stage = None
     if keep_players:
         for player in self.players.values():
             player.reset()
-        self.game_stage = "initialization"
+        self.next_stage()
     else:
         self.players = {}
-        self.game_stage = "registration"
     for camel in self.camels.values():
         camel.reset()
     for space in self.spaces.values():
@@ -82,4 +82,3 @@ def reset(self, keep_players=True):
     self.last_bet_loser = None
     self.playing_order = None
     self.reset_dices()
-
