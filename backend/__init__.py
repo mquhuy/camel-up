@@ -66,14 +66,6 @@ def create_app():
             g.update_personal_info(player=p)
         g.update_all_game_info()
 
-    @io.on('new_game', namespace='/message')
-    def reset(param):
-        game_id = str(param["game_id"])
-        g = games.get(game_id, None)
-        if g is not None:
-            g.reset(False)
-            g.update_all_game_info()
-
     @io.on('end_game', namespace='/message')
     def end_game(param):
         game_id = str(param["game_id"])

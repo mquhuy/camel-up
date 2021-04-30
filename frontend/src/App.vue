@@ -40,7 +40,7 @@
       </div>
     </div>
     <button @click="reset">Replay</button>
-    <button @click="new_game">New Game</button>
+    <button @click="end-game">New Game</button>
   </div>
 </template>
 
@@ -49,7 +49,7 @@ import Register from "./components/Register";
 import Player from "./components/Player";
 import Board from "./components/board/Board";
 import BettingDeck from "./components/BettingDeck";
-import { mapState, mapActions } from "vuex";
+import { mapState } from "vuex";
 
 export default {
   name: "App",
@@ -87,7 +87,6 @@ export default {
   methods: {
     start: function () {
       this.$store.dispatch("sendCommand", { command: "start" });
-      this.ready = true;
     },
     updateName(e) {
       this.$store.commit("UPDATE_NAME", e.target.value);
@@ -98,16 +97,12 @@ export default {
     reset: function () {
       this.$store.dispatch("sendCommand", { command: "reset" });
     },
-    new_game: function () {
-      this.$store.dispatch("sendCommand", { command: "new_game" });
-    },
     join: function () {
       this.$store.dispatch("sendCommand", { command: "join" });
     },
     end_game: function () {
       this.$store.dispatch("sendCommand", { command: "end_game" });
     },
-    ...mapActions(["performMove"]),
   },
   components: {
     Register,
