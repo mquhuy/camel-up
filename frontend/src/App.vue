@@ -1,4 +1,7 @@
 <template>
+  <div class="error" v-if="errorLog != null">
+      {{ errorLog }} <button @click="reset_log()">Dismiss</button>
+  </div>
   <div v-if="this.gameStage == 'initialization'" class="grade-board">
     <Register />
   </div>
@@ -40,7 +43,7 @@
       </div>
     </div>
     <button @click="reset">Replay</button>
-    <button @click="end-game">New Game</button>
+    <button @click="end_game()">New Game</button>
   </div>
 </template>
 
@@ -67,6 +70,7 @@ export default {
       "turnEnd",
       "betDeck",
       "ready",
+      "errorLog",
     ]),
   },
   data () {
@@ -78,6 +82,7 @@ export default {
     this.$store.dispatch("sendCommand", {
       command: "reConnect",
     });
+    this.endGameClicked = false;
   },
   beforeUnmount() {
     this.$store.dispatch("sendCommand", {
@@ -102,6 +107,9 @@ export default {
     },
     end_game: function () {
       this.$store.dispatch("sendCommand", { command: "end_game" });
+    },
+    reset_log: function () {
+      this.$store.commit("UPDATE_ERROR_LOG", null);
     },
   },
   components: {
@@ -128,6 +136,15 @@ body {
 }
 .container {
   display: flex;
+}
+.error {
+  background-color: $orange;
+  color: $white;
+  button {
+    background-color: $yellow;
+    border: none;
+    margin-left: 20px;
+  }
 }
 .grade-board {
   background-color: $white;

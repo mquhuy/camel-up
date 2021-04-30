@@ -21,10 +21,11 @@ const getDefaultState = () => {
     ready: false,
     lastBetWinner: null,
     lastBetLoser: null,
-  }
+    errorLog: null,
+  };
 };
 
-const state = getDefaultState()
+const state = getDefaultState();
 
 const mutations = {
   RESET_ALL(state) {
@@ -80,6 +81,9 @@ const mutations = {
   UPDATE_GAME_ID(state, payload) {
     state.gameId = payload;
   },
+  UPDATE_ERROR_LOG(state, payload) {
+    state.errorLog = payload.error;
+  }
 };
 
 const actions = {
@@ -122,6 +126,7 @@ const actions = {
         break;
       case "game-deletion":
         context.commit("RESET_ALL");
+        context.commit("UPDATE_ERROR_LOG", payload);
         break;
       case "players":
         context.commit("UPDATE_PLAYERS", payload);
@@ -135,6 +140,7 @@ const actions = {
         break;
       case "registration-error":
         context.commit("RESET_ALL");
+        context.commit("UPDATE_ERROR_LOG", payload);
         break;
       default:
         console.log(type);

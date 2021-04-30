@@ -69,9 +69,10 @@ def create_app():
     @io.on('end_game', namespace='/message')
     def end_game(param):
         game_id = str(param["game_id"])
+        player_id = param["id"]
         g = games.get(game_id, None)
         if g is not None:
-            g.send_destruct_command()
+            g.send_destruct_command(player_id)
             del g
             del games[game_id]
 

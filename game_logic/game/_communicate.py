@@ -66,6 +66,7 @@ def send_game_result(self, room=None):
     info = self.generate_game_result_info()
     self.emit_info("game-end-result", info, room)
 
-def send_destruct_command(self):
-    self.emit_info("game-deletion", {})
-
+def send_destruct_command(self, player_id):
+    player_name = self.players[player_id].name
+    self.emit_info("game-deletion",
+                   {"error": "Player {} ends the game".format(player_name)})
