@@ -105,7 +105,7 @@ const actions = {
         context.commit("UPDATE_ACTIONS", payload);
         break;
       case "action-error":
-        console.log(payload.error);
+        context.commit("UPDATE_ERROR_LOG", payload);
         context.commit("UPDATE_TURN_STATUS", false);
         break;
       case "action-success":
