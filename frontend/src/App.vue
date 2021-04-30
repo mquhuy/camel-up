@@ -9,7 +9,7 @@
   </div>
   <div v-if="this.gameStage == 'registration'" class="buttons">
     <button v-if="!ready && registered" @click="start">Ready</button>
-    <p v-if="ready">Waiting for other players</p>
+    <p v-if="ready">Waiting for other players. Use this game id to invite them: {{ gameId }}</p>
   </div>
   <div v-if="this.gameStage == 'play'">
     <div class="container">

@@ -95,13 +95,9 @@ def create_app():
         g.emit_info("action-success", {})
         utils.run_a_game(g)
 
-
     @io.on('join', namespace="/message")
     def join_game(data):
-        print(data)
-        print(games.keys())
         g = games[str(data["gameId"])]
-        print(g)
         if g is not None:
             player = g.players.get(data["id"], None)
             if player is not None:
@@ -126,9 +122,6 @@ def create_app():
             join_room(room)
             g.emit_info("registration-error", {"error": "game id not existed"}, room=room)
             leave_room(room)
-
-
-
 
     @io.on('reConnect', namespace='/message')
     def reconnect_player(connect_player):
