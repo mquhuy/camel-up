@@ -14,8 +14,9 @@ def create_app():
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_mapping(
             SECRET_KEY='dev',
+            CORS_HEADER = "Content-Type"
     )
-    io = SocketIO(app, path='/backend/socket.io')
+    io = SocketIO(app, path='/backend/socket.io', cors_allowed_origins='*')
     games = {}
 
     @io.on('register', namespace='/message')
