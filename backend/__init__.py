@@ -167,5 +167,9 @@ def create_app():
     @io.on('disconnect', namespace='/message')
     def message_disconnect():
         print("[Frontend] Disconnected with Websocket")
+        for game_id, g in games.items():
+            if g.check_idle():
+                del g
+                del games[game_id]
 
     return app

@@ -1,3 +1,4 @@
+import time
 from ..config import FINAL_BET_WINNER_PRIZES
 STAGES = ["initialization", "registration", "play", "result"]
 
@@ -35,3 +36,10 @@ def determine_game_result(self):
 def declare_winning_camel(self):
     self.winning_camel = self.final_space.get_top_camel()
     self.determine_game_result()
+
+def check_idle(self):
+    if self.winning_camel is not None:
+        return True
+    if (time.time() - self.init_time > 1800):
+        return True
+    return False

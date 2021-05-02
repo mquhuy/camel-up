@@ -1,4 +1,5 @@
 import random
+import time
 
 try:
     from ..space import Space, Camel
@@ -32,6 +33,7 @@ class Game:
         self.io = io_instance
         self.expected_n_players = 0
         self.roll_results = []
+        self.init_time = time.time()
 
    # Leg
    from ._preparations import \
@@ -76,7 +78,8 @@ class Game:
            next_stage, \
            game_scoring_round, \
            determine_game_result, \
-           declare_winning_camel
+           declare_winning_camel, \
+           check_idle
 
    from ._communicate import \
            set_game_id, \
