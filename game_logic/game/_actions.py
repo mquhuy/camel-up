@@ -20,14 +20,11 @@ def start_game(self):
 
 def move(self, camel_name, steps):
     new_pos = self.camels[camel_name].position_id + steps
-    if new_pos > len(self.spaces):
-        self.move_camel_to_space(camel_name, 17)
-        self.declare_winning_camel()
-        return
-    if self.spaces[new_pos].desert_state != 0:
+    # Apply desert effect only if the space exists on the board
+    if new_pos <= len(self.spaces) and self.spaces[new_pos].desert_state != 0:
         self.spaces[new_pos].desert_player.earn_points(1, "owning the desert")
         new_pos += self.spaces[new_pos].desert_state
-    if new_pos > len(self.spaces):
+    if new_pos >= len(self.spaces):
         self.move_camel_to_space(camel_name, 17)
         self.declare_winning_camel()
         return

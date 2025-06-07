@@ -53,7 +53,7 @@ def update_leg_betting_info(self, room=None):
     self.emit_info("betting-tiles", info, room)
 
 def update_board_info(self, room=None):
-    print("Sending update player info")
+    print("Sending update board info")
     info = self.generate_board_info()
     info.update(self.generate_leg_betting_info())
     self.emit_info("board", info, room)
