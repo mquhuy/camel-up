@@ -6,7 +6,7 @@ class Space:
         self.desert_state = 0
 
     def get_top_camel(self):
-        # The camels appears later on the list stack on top of the former.
+        # Camels added later in the list stack on top of earlier ones.
         if len(self.camels) <= 0:
             return None
         return self.camels[-1]
