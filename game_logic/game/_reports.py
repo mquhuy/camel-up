@@ -34,7 +34,9 @@ def generate_board_info(self):
                           'desertable': self.can_put_desert(self.current_player, s_id)}
                    for s_id, s in self.spaces.items()},
         }
-    info["spaces"][1]["camels"] += self.final_space.camels
+    info["spaces"][1]["camels"] = (
+        info["spaces"][1]["camels"] + list(self.final_space.camels)
+    )
     info["last_bet_winner"] = self.last_bet_winner
     info["last_bet_loser"] = self.last_bet_loser
     return info
